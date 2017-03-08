@@ -1,0 +1,23 @@
+{
+  "name": "tunivet",
+  "version": "0.0.1",
+  "description": "Website for Menzah 6 Vet Clinic",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wael Ben Dhia",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.1",
+    "isemail": "^2.2.1",
+    "mysql": "^2.13.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
