@@ -13,12 +13,13 @@ module.exports = (passport) => {
 
 	passport.use(new LocalStrategy(
 		(username, password, done) => {
-			console.log(username + " " + password)
 			DB.authenticateUser({username: username, password: password})
 			.then( user => {
 				return done(null, user)
 			})
-			.catch(err => done(null, false, { message: err }))
+			.catch(err => {
+				done(null, false, { message: err })
+			})
 		}
 	))
 }

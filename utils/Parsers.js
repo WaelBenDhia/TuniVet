@@ -1,13 +1,33 @@
+const Contract = require('../utils/TunivetContract.js')
+
+var formatDate = date => {
+	return require('moment')(date).format('YYYY-MM-DD HH:mm:ss');
+}
+
+var parseArticlesFromRowData = rows => {
+	var patients = []
+	for(var i = 0; i < rows.length; i++)
+		patients.push({
+			id: rows[i][Contract.ArticlesEntry.ID],
+			name: rows[i][Contract.ArticlesEntry.NAME],
+			author: rows[i][Contract.ArticlesEntry.AUTHOR],
+			writeDate: formatDate(rows[i][Contract.ArticlesEntry.WRITE_DATE]),
+			updateDate: formatDate(rows[i][Contract.ArticlesEntry.LAST_UPDATE_DATE]),
+			condition: rows[i][Contract.ArticlesEntry.CONTENT]
+		})
+	return patients
+}
+
 var parsePatientsFromRowData = rows => {
 	var patients = []
 	for(var i = 0; i < rows.length; i++)
 		patients.push({
-			id: rows[i].id,
-			name: rows[i].name,
-			entryDate: rows[i].entry_date,
-			exitDate: rows[i].exit_date,
-			updateDate: rows[i].update_date,
-			condition: rows[i].condition
+			id: rows[i][Contract.PatientsEntry.ID],
+			name: rows[i][Contract.PatientsEntry.NAME],
+			entryDate: formatDate(rows[i][Contract.PatientsEntry.ENTRY_DATE]),
+			exitDate: formatDate(rows[i][Contract.PatientsEntry.EXIT_DATE]),
+			updateDate: formatDate(rows[i][Contract.PatientsEntry.UPDATE_DATE]),
+			condition: rows[i][Contract.PatientsEntry.CONDITION]
 		})
 	return patients
 }
@@ -16,17 +36,31 @@ var parseUsersFromRowData = rows => {
 	var users = []
 	for(var i = 0; i < rows.length; i++)
 		users.push({
-			username: rows[i].username,
-			email: rows[i].email,
-			firstName: rows[i].first_name,
-			lastName: rows[i].last_name,
-			password: rows[i].password,
-			salt: rows[i].salt
+			username: rows[i][Contract.UsersEntry.USERNAME],
+			email: rows[i][Contract.UsersEntry.EMAIL],
+			firstName: rows[i][Contract.UsersEntry.FIRST_NAME],
+			lastName: rows[i][Contract.UsersEntry.LAST_NAME],
+			password: rows[i][Contract.UsersEntry.PASSWORD],
+			salt: rows[i][Contract.UsersEntry.SALT]
 		})
 	return users
 }
 
+var parseBackgroundImagesFromRowData = rows => {
+	var images = []
+	for(var i = 0; i < rows.length; i++)
+		images.push({
+			id: rows[i][Contract.BackgroundImagesEntry.ID],
+			imageData: rows[i][Contract.BackgroundImagesEntry.IMAGE_DATA]
+		})
+	return images
+}
+
+
+
 module.exports = {
+	parseArticlesFromRowData: parseArticlesFromRowData,
 	parsePatientsFromRowData: parsePatientsFromRowData,
-	parseUsersFromRowData: parseUsersFromRowData
+	parseUsersFromRowData: parseUsersFromRowData,
+	parseBackgroundImagesFromRowData: parseBackgroundImagesFromRowData
 }

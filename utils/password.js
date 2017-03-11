@@ -16,7 +16,6 @@ var hashPassword = (password, salt) => {
 					fulfill({password:derivedKey.toString('hex'), salt: salt})
 			})
 		}else{
-			console.log('1 arg')
 			crypto.randomBytes(SALT_LEN / 2, (err, salt) => {
 				if(err)
 					reject(err)
