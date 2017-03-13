@@ -21,4 +21,8 @@ require('./config/passport.js')(passport)
 
 require('./app/routes.js')(server, passport)
 
+DB.createTables()
+.then( fuls => fuls.forEach( ful => console.log(ful)) )
+.catch( err => console.log(err) )
+
 server.listen(port, ip, () => console.log("Listening on " + ip + ", port " + port) )

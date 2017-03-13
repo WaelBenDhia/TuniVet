@@ -1,49 +1,12 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<div class="landing landing-{{selection}}">
-		<div class="backgrounds">
-			<span class="background-0"></span>
-			<span class="background-1"></span>
-			<span class="background-2"></span>
-			<span class="background-3"></span>
-			<span class="background-4"></span>
-		</div>
-		<span ng-click="select(0)" class="landing-intro" ng-class="{'minimized' : selection != 0}">
-			<h1 class="label">Introduction</h1>
-			<span class="content">
-				<h1>Bonjour</h1>
-				<p>Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. </p>
-			</span>
-		</span>
-		<span ng-click="select(1)" class="landing-location" ng-class="{'minimized' : selection != 1}">
-			<h1 class="label">Contact</h1>
-			<span class="content">
-				<h1>Bonjour</h1>
-				<p>Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. </p>
-			</span>
-		</span>
-		<span ng-click="select(2)" class="landing-tarifs" ng-class="{'minimized' : selection != 2}">
-			<h1 class="label">Nos Tarifs</h1>
-			<span class="content">
-				<h1>Bonjour</h1>
-				<p>Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. </p>
-			</span>
-		</span>
-		<span ng-click="select(3)" class="landing-checkup" ng-class="{'minimized' : selection != 3}">
-			<h1 class="label">Suivi</h1>
-			<span class="content">
-				<h1>Bonjour</h1>
-				<p>Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. </p>
-			</span>
-		</span>
-		<span ng-click="select(4)" class="landing-articles" ng-class="{'minimized' : selection != 4}">
-			<h1 class="label">Articles</h1>
-			<span class="content">
-				<h1>Bonjour</h1>
-				<p>Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. Nous sommes le clinique veterinaire menzah 6. </p>
-			</span>
-		</span>
+	<div class="landing-section-1">
+		<h1 class="header-background">{{info[0].title}}</h1>
+		<h1>{{info[0].title}}</h1>
+	</div>
+	<div class="seperator seperator-1">
+		<p ng-bind-html="info[0].body"></p>
 	</div>
 </body>
 </html>

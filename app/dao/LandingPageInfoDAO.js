@@ -3,9 +3,9 @@ const Parsers = require('../../utils/Parsers.js')
 
 var getConnection = require('../../utils/ConnectionHandler.js').getConnection
 
-var getBackgroundImage = (id) => {
+var getAllLandingPageInfo = () => {
 	return new Promise( (fulfill, reject) => {
-		var query = `select * from ${Contract.BackgroundImagesEntry.TABLE_NAME} where ${Contract.BackgroundImagesEntry.ID} ='${id}'`;
+		var query = `select * from ${Contract.LandingPageInfoEntry.TABLE_NAME}`;
 		getConnection()
 		.then( con => {
 			con.query(query, (err, rows) => {
@@ -13,7 +13,7 @@ var getBackgroundImage = (id) => {
 				if(err)
 					reject(err)
 				else{
-					fulfill(Parsers.parseBackgroundImagesFromRowData(rows)[0])
+					fulfill(Parsers.parseLandingPageInfoFromRowData(rows))
 				}
 			})
 		})
@@ -21,17 +21,19 @@ var getBackgroundImage = (id) => {
 	})
 }
 
-var updateBackgroundImage = (image) => {
+var updateLandingPageInfo = info => {
 	return new Promise((fulfill, reject) => {
 		getConnection()
 		.then( con => {
 			con.query(
-				`update ${Contract.BackgroundImagesEntry.TABLE_NAME} `
-				+`set \`${Contract.BackgroundImagesEntry.IMAGE_DATA}\` = ? `
-				+`where \`${Contract.BackgroundImagesEntry.ID}\` = ? ;`,
+				`update ${Contract.LandingPageInfoEntry.TABLE_NAME} `
+				+`set \`${Contract.LandingPageInfoEntry.TITLE}\` = ?, `
+				+` \`${Contract.LandingPageInfoEntry.BODY}\` = ? `
+				+`where \`${Contract.LandingPageInfoEntry.ID}\` = ? ;`,
 				[
-					image.imageData,
-					image.id
+					info.title
+					info.body,
+					info.id
 				],
 				(err, OkPacket) => {
 					con.release()
@@ -46,6 +48,6 @@ var updateBackgroundImage = (image) => {
 }
 
 module.exports = {
-	getBackgroundImage: getBackgroundImage,
-	updateBackgroundImage: updateBackgroundImage
+	getAllLandingPageInfo: getAllLandingPageInfo,
+	updateLandingPageInfo: updateLandingPageInfo
 }

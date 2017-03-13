@@ -56,11 +56,21 @@ var parseBackgroundImagesFromRowData = rows => {
 	return images
 }
 
-
+var parseLandingPageInfoFromRowData = rows => {
+	var info = []
+	for(var i = 0; i < rows.length; i++)
+		info.push({
+			id: rows[i][Contract.LandingPageInfoEntry.ID],
+			title: rows[i][Contract.LandingPageInfoEntry.TITLE],
+			body: rows[i][Contract.LandingPageInfoEntry.BODY]
+		})
+	return info
+}
 
 module.exports = {
 	parseArticlesFromRowData: parseArticlesFromRowData,
 	parsePatientsFromRowData: parsePatientsFromRowData,
 	parseUsersFromRowData: parseUsersFromRowData,
-	parseBackgroundImagesFromRowData: parseBackgroundImagesFromRowData
+	parseBackgroundImagesFromRowData: parseBackgroundImagesFromRowData,
+	parseLandingPageInfoFromRowData: parseLandingPageInfoFromRowData
 }

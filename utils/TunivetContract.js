@@ -30,9 +30,16 @@ UsersEntry.LAST_NAME             = "last_name"
 UsersEntry.PASSWORD              = "password"
 UsersEntry.SALT                  = "salt"
 
+function LandingPageInfoEntry(){}
+LandingPageInfoEntry.TABLE_NAME  = "landing_page_info"
+LandingPageInfoEntry.ID          = "id"
+LandingPageInfoEntry.TITLE       = "title"
+LandingPageInfoEntry.BODY        = "body"
+
 module.exports = {
 	PatientsEntry: PatientsEntry,
 	ArticlesEntry: ArticlesEntry,
 	BackgroundImagesEntry: BackgroundImagesEntry,
-	UsersEntry: UsersEntry
+	UsersEntry: UsersEntry,
+	LandingPageInfoEntry: LandingPageInfoEntry
 }

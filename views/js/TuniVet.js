@@ -1,4 +1,4 @@
-var app = angular.module('tunivetApp', ['ngAnimate', 'ngRoute', 'ngCookies']);
+var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies']);
 
 var bands = [];
 
@@ -45,17 +45,7 @@ app
 	}
 })
 .controller('landingController', function($scope){
-	$scope.selection = 0;
-	$scope.select = selection => {
-		switch(selection){
-			case 0 : console.log("Introduction"); break;
-			case 1 : console.log("Contact"); break;
-			case 2 : console.log("Tarifs"); break;
-			case 3 : console.log("Suivi"); break;
-			case 4 : console.log("Articles"); break;
-		}
-		$scope.selection = selection;
-	}
+	$scope.info = [{title: 'Bienvenue,', body:"a TuniVet, Clinique Verterinaire Menzah 6.<br>Nous assurons les meilleurs soins a vos animaux de compagnie 24/7."}]
 })
 .controller('loginController', function($scope, $location, $timeout, AuthService){
 	$scope.dataLoading = false;

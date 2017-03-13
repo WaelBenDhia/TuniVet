@@ -20,7 +20,7 @@ var dropTables = () => {
 				con.release()
 				if(err)
 					reject(err)
-				else
+				else[]
 					fulfill(rows)
 			})
 		})
@@ -58,34 +58,47 @@ var createTables = () => {
 		+`\`${Contract.BackgroundImagesEntry.ID}\` int not null auto_increment primary key,`
 		+`\`${Contract.BackgroundImagesEntry.IMAGE_DATA}\` mediumblob);`
 
+	var createLandingPageInfoQuery = `create table if not exists ${Contract.LandingPageInfoEntry.TABLE_NAME}(`
+		+`\`${Contract.LandingPageInfoEntry.ID}\` int not null auto_increment primary key,`
+		+`\`${Contract.LandingPageInfoEntry.TITLE}\` varchar(255),`
+		+`\`${Contract.LandingPageInfoEntry.BODY}\` text);`
+
 	var fuls = []
 	return new Promise((fulfill, reject) => {
 		getConnection().then((con) => {
 			con.query(createUsersQuery, (err, success) => {
 				if(err){
 					con.release()
-					reject(err)
+					reject(err + "\n" + createUsersQuery)
 				}else{
 					fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`)
 					con.query(createPatientsQuery, (err, success) => {
 						if(err){
 							con.release()
-							reject(err)
+							reject(err + "\n" + createPatientsQuery)
 						}else{
 							fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`)
 							con.query(createArticlesQuery, (err, success) => {
 								if(err){
 									con.release()
-									reject(err)
+									reject(err + "\n" + createArticlesQuery)
 								}else{
 									fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`)
-									con.query(createBackgroundImagesQuery, (err, success) =>{
-										con.release()
-										if(err)
-											reject(err)
-										else{
+									con.query(createBackgroundImagesQuery, (err, success) => {
+										if(err){
+											con.release()
+											reject(err + "\n" + createBackgroundImagesQuery)
+										}else{
 											fuls.push(`${Contract.BackgroundImagesEntry.TABLE_NAME} table created successfully.`)
-											fulfill(fuls)
+											con.query(createLandingPageInfoQuery, (err, success) => {
+												con.release()
+												if(err)
+													reject(err + "\n" + createLandingPageInfoQuery)
+												else{
+													fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`)
+													fulfill(fuls)
+												}
+											})
 										}
 									})
 								}
