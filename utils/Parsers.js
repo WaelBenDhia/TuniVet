@@ -1,12 +1,12 @@
-const Contract = require('../utils/TunivetContract.js')
+const Contract = require('../utils/TunivetContract.js');
 
 var formatDate = date => {
 	return require('moment')(date).format('YYYY-MM-DD HH:mm:ss');
-}
+};
 
 var parseArticlesFromRowData = rows => {
-	var patients = []
-	for(var i = 0; i < rows.length; i++)
+	var patients = [];
+	for (var i = 0; i < rows.length; i++)
 		patients.push({
 			id: rows[i][Contract.ArticlesEntry.ID],
 			name: rows[i][Contract.ArticlesEntry.NAME],
@@ -14,13 +14,13 @@ var parseArticlesFromRowData = rows => {
 			writeDate: formatDate(rows[i][Contract.ArticlesEntry.WRITE_DATE]),
 			updateDate: formatDate(rows[i][Contract.ArticlesEntry.LAST_UPDATE_DATE]),
 			condition: rows[i][Contract.ArticlesEntry.CONTENT]
-		})
-	return patients
-}
+		});
+	return patients;
+};
 
 var parsePatientsFromRowData = rows => {
-	var patients = []
-	for(var i = 0; i < rows.length; i++)
+	var patients = [];
+	for (var i = 0; i < rows.length; i++)
 		patients.push({
 			id: rows[i][Contract.PatientsEntry.ID],
 			name: rows[i][Contract.PatientsEntry.NAME],
@@ -28,13 +28,13 @@ var parsePatientsFromRowData = rows => {
 			exitDate: formatDate(rows[i][Contract.PatientsEntry.EXIT_DATE]),
 			updateDate: formatDate(rows[i][Contract.PatientsEntry.UPDATE_DATE]),
 			condition: rows[i][Contract.PatientsEntry.CONDITION]
-		})
-	return patients
-}
+		});
+	return patients;
+};
 
 var parseUsersFromRowData = rows => {
-	var users = []
-	for(var i = 0; i < rows.length; i++)
+	var users = [];
+	for (var i = 0; i < rows.length; i++)
 		users.push({
 			username: rows[i][Contract.UsersEntry.USERNAME],
 			email: rows[i][Contract.UsersEntry.EMAIL],
@@ -42,30 +42,30 @@ var parseUsersFromRowData = rows => {
 			lastName: rows[i][Contract.UsersEntry.LAST_NAME],
 			password: rows[i][Contract.UsersEntry.PASSWORD],
 			salt: rows[i][Contract.UsersEntry.SALT]
-		})
-	return users
-}
+		});
+	return users;
+};
 
 var parseBackgroundImagesFromRowData = rows => {
-	var images = []
-	for(var i = 0; i < rows.length; i++)
+	var images = [];
+	for (var i = 0; i < rows.length; i++)
 		images.push({
 			id: rows[i][Contract.BackgroundImagesEntry.ID],
 			imageData: rows[i][Contract.BackgroundImagesEntry.IMAGE_DATA]
-		})
-	return images
-}
+		});
+	return images;
+};
 
 var parseLandingPageInfoFromRowData = rows => {
-	var info = []
-	for(var i = 0; i < rows.length; i++)
+	var info = [];
+	for (var i = 0; i < rows.length; i++)
 		info.push({
 			id: rows[i][Contract.LandingPageInfoEntry.ID],
 			title: rows[i][Contract.LandingPageInfoEntry.TITLE],
 			body: rows[i][Contract.LandingPageInfoEntry.BODY]
-		})
-	return info
-}
+		});
+	return info;
+};
 
 module.exports = {
 	parseArticlesFromRowData: parseArticlesFromRowData,
@@ -73,4 +73,4 @@ module.exports = {
 	parseUsersFromRowData: parseUsersFromRowData,
 	parseBackgroundImagesFromRowData: parseBackgroundImagesFromRowData,
 	parseLandingPageInfoFromRowData: parseLandingPageInfoFromRowData
-}
+};
