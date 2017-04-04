@@ -2,18 +2,21 @@
 <html>
 <head>
 <body>
-    <h1>Login</h1>
-    <form>
-        <div ng-if="showMessage">{{message}}</div>
-        <div>
-            <label>Nom d'utilisateur</label>
-            <input type="text" ng-model="user.username">
-        </div>
-        <div>
-            <label>Mot de passe</label>
-            <input type="password" ng-model="user.password">
-        </div>
-        <button type="submit" ng-click="login(user)" ng-disabled="dataLoading">Login</button>
-    </form>
+    <div class="login-page">
+        <form class="card elevation-4">
+            <h1>Login</h1>
+            <div>
+                <label>Nom d'utilisateur</label>
+                <input type="text" ng-model="user.username">
+                <span class="highlight">{{user.username}}</span>
+            </div>
+            <div>
+                <label>Mot de passe</label>
+                <input type="password" ng-model="user.password">
+            </div>
+            <button class="elevation-lift" type="submit" ng-click="login(user)" ng-disabled="dataLoading">Login</button>
+            <div class="error-message" ng-if="showMessage">{{message}}</div>
+        </form>
+    </div>
 </body>
 </html>

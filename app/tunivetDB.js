@@ -124,5 +124,6 @@ module.exports = {
 	getPatient: PatientDAO.getPatient,
 	insertArticle: ArticleDAO.insertArticle,
 	getArticle: ArticleDAO.getArticle,
-	getImage: BackgroundImageDAO.getBackgroundImage
+	getImage: BackgroundImageDAO.getBackgroundImage,
+	getPatients: PatientDAO.getPatients
 }

@@ -11,10 +11,19 @@
 	<script type="text/javascript" src="js/TuniVet.js"></script>
 </head>
 <body ng-app="tunivetApp" ng-controller="tunivetController">
+	<span class="title-bottom">TuniVet</span>
 	<header>
-		<a href="#/" class="title"><span>Tuni</span><span>Vet</span></a>
-		<a href="#/login" ng-if="!isLoggedIn" class="button">Login</a>
-		<a href ng-click="logout()" ng-if="isLoggedIn" class="button">Logout</a>
+	<!-- href="#/patient/:id" -->
+		<a href="#/" class="title">Tuni<span class="secondary-color">Vet</span></a>
+		<a href="#/login" style="right: 0px; width: 70px;" ng-if="!isLoggedIn" class="button">Login</a>
+		<a href ng-click="logout()" style="right: 0px; width: 70px;" ng-if="isLoggedIn" class="button">Logout</a>
+		<a href="#/patients" style="right: 361px; width: 141px;" ng-if="isLoggedIn" class="button">Inserer Patient</a>
+		<div class="button" style="right: 110px; width: 211px;" >
+			<span>Suivi:</span>
+			<input type="number" ng-model="patientId">
+			<span class="highlight">{{patientId}}</span>
+			<input type="submit" value="→">
+		</div>
 	</header>
 	<div class="view-holder" ng-view=""></div>
 	<footer>

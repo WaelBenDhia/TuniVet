@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies']);
 
 var bands = [];
@@ -13,6 +15,10 @@ app
 		templateUrl:'templates/login.html',
 		controller: 'loginController'
 	})
+	.when('/patients', {
+		templateUrl:'templates/patients.html',
+		controller: 'patientsController'
+	})
 	.when('/patient/:id', {
 		templateUrl:'templates/patient.html',
 		controller: 'patientController'
@@ -26,26 +32,49 @@ app
 		controller: 'albumSearchController'
 	});
 })
-.controller('tunivetController', function($scope, $location, $rootScope, AuthService){
-	$scope.isLoggedIn = AuthService.getUserStatus() == 'true'
-	$scope.$on('loginBroadcast', function() {
-		$scope.isLoggedIn = AuthService.getUserStatus()
+.controller('tunivetController', function($scope, $location, $rootScope, AuthService, Session, AUTH_EVENTS){
+	$scope.isLoggedIn = Session.getUser() != null
+
+	AuthService.getUserStatus();
+
+	$scope.$on(AUTH_EVENTS.loginSuccess, function() {
+		$scope.isLoggedIn = Session.getUser() != null
 	})
 
+	$scope.$on(AUTH_EVENTS.logoutSuccess, function() {
+		console.log("Logout success")
+		$scope.isLoggedIn = Session.getUser() != null
+	})
 
 	$scope.logout = () => {
 		AuthService.logout()
 		.then(() => {
-			AuthService.broadcastLogin()
 			$location.path('/')
 		})
 		.catch( err => {
-			console.log(err)
 		})
 	}
+
 })
 .controller('landingController', function($scope){
-	$scope.info = [{title: 'Bienvenue,', body:"a TuniVet, Clinique Verterinaire Menzah 6.<br>Nous assurons les meilleurs soins a vos animaux de compagnie 24/7."}]
+	$scope.info = [
+		{
+			title: 'Bienvenue',
+			body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+		},
+		{
+			title: 'Horaires',
+			body:"Ut enim ad minim veniam, quis nostrud exercitation<table><tr><td>Lundi - Mardi</td><td>9h a 18h</td></tr><tr><td>Samedi</td><td>9h a 14h</td></tr></table>ullamco laboris nisi ut aliquip ex ea commodo consequat."
+		},
+		{
+			title: 'Tarifs',
+			body:"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+		},
+		{
+			title: 'Autre',
+			body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+		}
+	]
 })
 .controller('loginController', function($scope, $location, $timeout, AuthService){
 	$scope.dataLoading = false;
@@ -54,14 +83,12 @@ app
 	$scope.login = user => {
 		$scope.dataLoading = true;
 		AuthService.login(user)
-		.then(
-			function(success){
-				AuthService.broadcastLogin()
-				showMessage(success, true);
-			},
-			function(err){
-				showMessage(err);
-			})
+		.then( success => {
+			showMessage(success, true);
+		})
+		.catch( err => {
+			showMessage(err.data.err.message);
+		})
 	}
 
 	var showMessage = function(message, success){
@@ -69,7 +96,7 @@ app
 		$scope.message = message;
 		$scope.showMessage = true;
 		$timeout(function(){
-			$scope.showMessage = false;
+		$scope.showMessage = false;
 			$scope.dataLoading = false;
 			if(success){
 				$location.path('/');
@@ -79,60 +106,41 @@ app
 })
 .controller('articlesController', function($scope){
 })
-.factory('AuthService', ($rootScope, $http) => {
-	var user = null;
+.controller('patientsController', function($scope){
+	
+})
+.factory('patientsService', function($http){
+	var patientsService = {}
 
-	return ({
-		isLoggedIn: isLoggedIn,
-		getUserStatus: getUserStatus,
-		login: login,
-		logout: logout,
-		register: register,
-		broadcastLogin: broadcastLogin
-	});
+	patientsService.getAll = $http.get('/patients')
 
-	function isLoggedIn(){
-		return user ? true : false;
-	}
+	return patientsService
+})
+.factory('AuthService', ($http, Session) => {
+	var authService = {}
 
-	function getUserStatus(){
-		console.log("getting status")
-		return $http.get('/userStatus')
+	authService.login = user => {
+		return $http
+		.post('/login', user)
 		.then( res => {
-			user = res.data.status
+			Session.create(res.data)
 		})
-		.catch( err => {
-			user = false;
-		});
 	}
 
-	function login(user){
-		return new Promise(function(fulfill, reject){
-			$http.post('/login', user)
-			.then( success => {
-				fulfill(success.data.status);
-			})
-			.catch( err => {
-				reject(err.data.err.message);
-			})
-		});
-	}
-
-	function logout(){
+	authService.logout = () => {
 		return new Promise(function(fulfill, reject){
 			$http.get('logout')
 			.then( success =>{
-				user = false;
+				Session.destroy()
 				fulfill();
 			})
 			.catch( err => {
-				user = false;
 				reject(err);
 			});
 		});
 	}
 
-	function register(user){
+	authService.register = user => {
 		return new Promise( (fulfill,reject) => {
 			$http.post('/signup', user)
 			.then( response => {
@@ -144,8 +152,39 @@ app
 		});
 	}
 
-	function broadcastLogin(){
-		console.log("Broadcasting")
-		$rootScope.$broadcast('loginBroadcast');
+	authService.getUserStatus = () => {
+		$http.get('/profile')
+		.then( res => {
+			Session.create(res.data)
+		})
+		.catch( e => {
+			Session.destroy()
+		})
 	}
+	return authService;
+})
+.service('Session', function($rootScope, AUTH_EVENTS){
+	var sessionUser = null
+
+	this.getUser = () => {
+		return sessionUser;
+	}
+
+	this.create = user => {
+		sessionUser = user;
+		if(sessionUser)
+			$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+	}
+
+	this.destroy = () => {
+		sessionUser = null;
+		$rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+	}
+})
+.constant('AUTH_EVENTS', {
+	loginSuccess: "auth-login-success",
+	loginFailed: "auth-login-failed",
+	logoutSuccess: "auth-logout-success",
+	notAuthenticated: 'auth-not-authenticated',
+	notAuthorized: 'auth-not-authorized'
 });

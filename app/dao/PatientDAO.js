@@ -89,8 +89,27 @@ var getPatient = (id) => {
 	})
 }
 
+var getPatients = id => {
+	return new Promise( (fulfill, reject) => {
+		var query = `select * from ${Contract.PatientsEntry.TABLE_NAME}`;
+		getConnection()
+		.then( con => {
+			con.query(query, (err, rows) => {
+				con.release()
+				if(err)
+					reject(err)
+				else{
+					fulfill(Parsers.parsePatientsFromRowData(rows))
+				}
+			})
+		})
+		.catch( err => reject(err) )
+	})
+}
+
 module.exports = {
 	insertPatient: insertPatient,
 	updatePatient: updatePatient,
-	getPatient: getPatient
+	getPatient: getPatient,
+	getPatients: getPatients
 }

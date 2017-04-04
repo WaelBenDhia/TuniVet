@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
-<body>
-	<div class="landing-section-1">
-		<h1 class="header-background">{{info[0].title}}</h1>
-		<h1>{{info[0].title}}</h1>
+<title></title>
+<body >
+	<div class="elevation-2 card landing-section landing-section-1">
+		<h1 class="title card elevation-2">{{info[0].title}}</h1>
+		<p class="content elevation-2" ng-bind-html="info[0].body"></p>
 	</div>
-	<div class="seperator seperator-1">
-		<p ng-bind-html="info[0].body"></p>
+	<div class="elevation-2 card landing-section landing-section-2">
+		<h1 class="title card elevation-2">{{info[1].title}}</h1>
+		<p class="content elevation-2" ng-bind-html="info[1].body"></p>
+	</div>
+	<div class="elevation-2 card landing-section landing-section-3">
+		<h1 class="title card elevation-2">{{info[2].title}}</h1>
+		<p class="content elevation-2" ng-bind-html="info[2].body"></p>
 	</div>
 </body>
 </html>

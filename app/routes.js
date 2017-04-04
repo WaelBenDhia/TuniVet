@@ -24,6 +24,8 @@ module.exports = (server, passport) => {
 
 	server.get('/css/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/css/${req.params.file}`)))
 
+	server.get('/css/fonts/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/css/fonts/${req.params.file}`)))
+
 	server.get('/js/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/${req.params.file}`)))
 
 	server.get('/templates/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/${req.params.file}`)))
@@ -78,12 +80,25 @@ module.exports = (server, passport) => {
 			req.logIn(user, err => {
 				if(err)
 					return res.status(500).json({ err: 'Login echoue.'})
-				res.status(200).json({ status: 'Login reussi'})
+				delete user['password']
+				delete user['salt']
+				res.status(200).json(user)
 			})
 		})(req, res, next)
     })
 
-	server.get('/profile', isLoggedIn, (req, res) => res.send(req.user))
+	server.get('/profile', isLoggedIn, (req, res) => {
+		var user = req.user
+		delete user['password']
+		delete user['salt']
+		res.send(user)
+	})
+
+	server.get('/patients', (req, res) => {
+		DB.getPatients()
+		.then( patients => res.send(patients))
+		.catch( err => res.send(err))
+	})
 
 	server.get('/article/:id', (req, res) => {
 		DB.getArticle(req.params.id)
