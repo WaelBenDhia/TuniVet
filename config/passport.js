@@ -5,7 +5,7 @@ module.exports = (passport) => {
 
 	passport.serializeUser((user, done) => done(null, user.username));
 
-	passport.deserializeUser(function (username, done) {
+	passport.deserializeUser((username, done) => {
 		DB.getUser(username)
 			.then(user => done(null, user))
 			.catch(err => done(err));
