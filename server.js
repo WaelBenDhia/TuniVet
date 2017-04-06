@@ -18,7 +18,7 @@ server.use(bodyParser.urlencoded({
 server.use(session({
     secret: 'tunivet2017',
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: true
 }));
 server.use(passport.initialize());
 server.use(passport.session());

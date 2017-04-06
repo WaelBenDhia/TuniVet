@@ -129,7 +129,7 @@ input::-webkit-inner-spin-button {
 .ng-enter {
 	transition: opacity var(--transition-time-fast) ease-out, transform var(--transition-time-slow) ease-out;
 	opacity: 0;
-	transform: translateY(40px) scaleX(0.9) scaleY(0.8);
+	transform: translateY(40px);
 }
 
 .ng-enter.ng-enter-active {
@@ -554,6 +554,7 @@ span.secondary-color {
 	transform: translate(-50%, 100%);
 }
 
+.patient button,
 .login-page button {
 	border: 0;
 	width: 150px;
@@ -629,4 +630,46 @@ span.secondary-color {
 	height: 200px;
 	margin: 10px;
 	background: white;
+	padding-top: 5px;
+}
+
+.patients-container>.patient>button {
+	position: absolute;
+	font-size: 24px;
+	margin: 0;
+	height: 40px;
+	right: 10px;
+	bottom: 10px;
+	transform: none;
+}
+
+.patients-container>.patient>div {
+	float: left;
+	width: 50%;
+	height: calc(33.333333333333%);
+	font-size: 20px;
+}
+
+.patients-container>.patient>div>span {
+	display: block;
+	float: left;
+	width: 100%;
+	line-height: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.patients-container>.patient>div>span:nth-child(1) {
+	padding-left: 5px;
+	font-family: var(--font-heading);
+	color: var(--primary-color);
+	height: 30%;
+	font-size: 80%;
+	line-height: 150%;
+}
+
+.patients-container>.patient>div>span:nth-child(2) {
+	padding-left: 5px;
+	height: 70%;
+	font-size: 20px;
 }

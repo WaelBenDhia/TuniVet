@@ -21,13 +21,27 @@
         </form>
         <div class="patients-container">
             <div class="patient elevation-3 card" ng-repeat="patient in patients">
-                <div>Identifiant:{{patient.id}}</div>
-                <div>Nom:{{patient.name}}</div>
-                <div>Date d'entree:{{patient.entryDate}}</div>
-                <div>Condition:{{patient.condition}}</div>
-                <div>Derniere mise a jour:{{patient.updateDate}}</div>
-                <div>Date de sortie:{{patient.exitDate}}</div>
-                <button class="elevation-lift" type="submit" ng-disabled="dataLoading">Login</button>
+                <div>
+                    <span>Nom:</span>
+                    <span>{{patient.name}}</span>
+                </div>
+                <div>
+                    <span>Date d'entree:</span>
+                    <span>{{patient.entryDate}}</span>
+                </div>
+                <div>
+                    <span>Condition:</span>
+                    <span>{{patient.condition}}</span>
+                </div>
+                <div>
+                    <span>Derniere mise a jour:</span>
+                    <span>{{patient.updateDate}}</span>
+                </div>
+                <div>
+                    <span>Date de sortie:</span>
+                    <span>{{patient.exitDate}}</span>
+                </div>
+                <button class="elevation-lift" type="submit" ng-disabled="dataLoading">Modifier</button>
             </div>
         </div>
 </body>
