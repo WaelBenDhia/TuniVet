@@ -1,122 +1,120 @@
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Thin.otf') format("opentype");
-    font-weight: 100;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Thin.otf') format("opentype");
+	font-weight: 100;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-ExtraLight.otf') format("opentype");
-    font-weight: 200;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-ExtraLight.otf') format("opentype");
+	font-weight: 200;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Light.otf') format("opentype");
-    font-weight: 300;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Light.otf') format("opentype");
+	font-weight: 300;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Regular.otf') format("opentype");
-    font-weight: 400;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Regular.otf') format("opentype");
+	font-weight: 400;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Book.otf') format("opentype");
-    font-weight: 500;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Book.otf') format("opentype");
+	font-weight: 500;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Medium.otf') format("opentype");
-    font-weight: 600;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Medium.otf') format("opentype");
+	font-weight: 600;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Bold.otf') format("opentype");
-    font-weight: 700;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Bold.otf') format("opentype");
+	font-weight: 700;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Black.otf') format("opentype");
-    font-weight: 800;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Black.otf') format("opentype");
+	font-weight: 800;
 }
 
 @font-face {
-    font-family: 'Geomanist';
-    src: url('./fonts/Geomanist-Ultra.otf') format("opentype");
-    font-weight: 900;
+	font-family: 'Geomanist';
+	src: url('./fonts/Geomanist-Ultra.otf') format("opentype");
+	font-weight: 900;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Thin.otf') format("opentype");
-    font-weight: 100;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Thin.otf') format("opentype");
+	font-weight: 100;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Light.otf') format("opentype");
-    font-weight: 300;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Light.otf') format("opentype");
+	font-weight: 300;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Regular.otf') format("opentype");
-    font-weight: 400;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Regular.otf') format("opentype");
+	font-weight: 400;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Bold.otf') format("opentype");
-    font-weight: 700;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Bold.otf') format("opentype");
+	font-weight: 700;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Thin Italic.otf') format("opentype");
-    font-weight: 100;
-    font-style: italic;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Thin Italic.otf') format("opentype");
+	font-weight: 100;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Light Italic.otf') format("opentype");
-    font-weight: 300;
-    font-style: italic;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Light Italic.otf') format("opentype");
+	font-weight: 300;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Regular Italic.otf') format("opentype");
-    font-weight: 400;
-    font-style: italic;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Regular Italic.otf') format("opentype");
+	font-weight: 400;
+	font-style: italic;
 }
 
 @font-face {
-    font-family: 'Bariol';
-    src: url('./fonts/Bariol Bold Italic.otf') format("opentype");
-    font-weight: 700;
-    font-style: italic;
+	font-family: 'Bariol';
+	src: url('./fonts/Bariol Bold Italic.otf') format("opentype");
+	font-weight: 700;
+	font-style: italic;
 }
-
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:200,400,600|Open+Sans:200,300,400,400i,700');
-
 @keyframes view-enter {
-	0%{
+	0% {
 		opacity: 0;
 		transform: translateY(40px);
 	}
-	50%{
+	50% {
 		opacity: 0;
-		transform: translateY(40px) ;
+		transform: translateY(40px);
 	}
-	100%{
+	100% {
 		opacity: 1;
 		transform: translateY(0px) scaleX(1);
 	}
@@ -124,31 +122,29 @@
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .ng-enter {
-	transition: opacity var(--transition-time-fast) ease-out,
-				transform var(--transition-time-slow) ease-out;
-	opacity:0;
+	transition: opacity var(--transition-time-fast) ease-out, transform var(--transition-time-slow) ease-out;
+	opacity: 0;
 	transform: translateY(40px) scaleX(0.9) scaleY(0.8);
 }
 
 .ng-enter.ng-enter-active {
-	opacity:1;
+	opacity: 1;
 	transform: none;
 }
 
 .ng-leave {
-	transition: opacity var(--transition-time-fast) ease-in,
-				transform var(--transition-time-slow) ease-in;
-	opacity:1;
+	transition: opacity var(--transition-time-fast) ease-in, transform var(--transition-time-slow) ease-in;
+	opacity: 1;
 	transform: none;
 }
 
 .ng-leave.ng-leave-active {
-	opacity:0;
+	opacity: 0;
 	transform: translateY(40px);
 }
 
@@ -165,74 +161,70 @@ input[type="number"] {
 	-moz-appearance: textfield;
 }
 
-:root{
-	--font-heading:"Geomanist", sans-serif;
-	--font-body:"Bariol", sans-serif;
-
-	--primary-color : #055B80;
-	--primary-color-transparent : rgba(5, 91, 128, 0.75);
-	--secondary-color : #FFB700;
-	--tertiary-color : #065220;
-	--tertiary-color-transparent : rgba(6, 82, 32, 0.75);
-	--quaternary-color : #430132;
-	--quinary-color : #7D2809;
-	--senary-color : #363537;
-	--senary-color-transparent : rgba(54, 53, 55, 0.75);
-	--septenary-color : #78172C;
-	--white : #E8EBF7;
-	--black : #00171F;
-
-	--transition-time-very-slow : 0.6s;
-	--transition-time-slow : 0.3s;
-	--transition-time-fast : 0.15s;
-
+:root {
+	--font-heading: "Geomanist", sans-serif;
+	--font-body: "Bariol", sans-serif;
+	--primary-color: #055B80;
+	--primary-color-transparent: rgba(5, 91, 128, 0.75);
+	--secondary-color: #FFB700;
+	--tertiary-color: #065220;
+	--tertiary-color-transparent: rgba(6, 82, 32, 0.75);
+	--quaternary-color: #430132;
+	--quinary-color: #7D2809;
+	--senary-color: #363537;
+	--senary-color-transparent: rgba(54, 53, 55, 0.75);
+	--septenary-color: #78172C;
+	--white: #E8EBF7;
+	--black: #00171F;
+	--transition-time-very-slow: 0.6s;
+	--transition-time-slow: 0.3s;
+	--transition-time-fast: 0.15s;
 	--header-height: 60px;
 }
 
-body::-webkit-scrollbar-track
-{
+body::-webkit-scrollbar-track {
 	background-color: white;
 }
 
-body::-webkit-scrollbar
-{
+body::-webkit-scrollbar {
 	width: 0;
 	height: 80%;
 	background-color: white;
 }
 
-body::-webkit-scrollbar-thumb
-{
+body::-webkit-scrollbar-thumb {
 	background-color: var(--secondary-color);
 }
 
 .elevation-1 {
-	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .elevation-2 {
-	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .elevation-3 {
-	box-shadow: 0 6px 6px rgba(0,0,0,0.23), 0 10px 20px rgba(0,0,0,0.19);
+	box-shadow: 0 6px 6px rgba(0, 0, 0, 0.23), 0 10px 20px rgba(0, 0, 0, 0.19);
 }
 
 .elevation-4 {
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .elevation-5 {
-	box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+	box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
-.elevation-lift{
-	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+.elevation-lift {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.elevation-lift:hover{
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+.elevation-lift:hover {
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
+
+
 /*
 --primary-color : #0AB5FF;
 --secondary-color : #FFB700;
@@ -243,7 +235,7 @@ body::-webkit-scrollbar-thumb
 --septenary-color : #EF2D56;
 */
 
-*{
+* {
 	font-family: var(--font-body);
 }
 
@@ -252,22 +244,25 @@ body::-webkit-scrollbar-thumb
 	color: var(--black);
 }
 
-h1, h2, h3, h4{
+h1,
+h2,
+h3,
+h4 {
 	font-family: var(--font-heading);
 }
 
-a{
+a {
 	text-decoration: none;
 }
 
-html{
+html {
 	background-color: white;
 	height: 100%;
 	width: 100%;
 	margin: 0;
 }
 
-body{
+body {
 	border-left: 5px solid var(--primary-color);
 	border-right: 5px solid var(--secondary-color);
 	width: calc(100% - 64px);
@@ -277,13 +272,13 @@ body{
 	overflow-x: hidden;
 }
 
-.view-holder{
+.view-holder {
 	position: relative;
 	padding-top: var(--header-height);
 	min-height: calc(100vh - var(--header-height));
 }
 
-header{
+header {
 	z-index: 2;
 	width: calc(100% - 96px);
 	position: fixed;
@@ -296,12 +291,11 @@ header{
 	box-shadow: 0 20px 20px var(--white);
 }
 
-
-header.hidden{
+header.hidden {
 	transform: translateY(-100%);
 }
 
-.title-bottom{
+.title-bottom {
 	font-family: var(--font-heading);
 	font-size: 110px;
 	font-weight: bold;
@@ -317,7 +311,7 @@ header.hidden{
 	user-select: none;
 }
 
-header>.title{
+header>.title {
 	font-family: var(--font-heading);
 	float: left;
 	margin: 0 10px;
@@ -330,15 +324,15 @@ header>.title{
 	user-select: none;
 }
 
-header>.title:hover{
+header>.title:hover {
 	color: var(--primary-color);
 }
 
-header>.title>span{
-	font-family: var(--font-heading);	
+header>.title>span {
+	font-family: var(--font-heading);
 }
 
-header>.button{
+header>.button {
 	position: absolute;
 	font-size: 25px;
 	font-weight: 400;
@@ -347,10 +341,10 @@ header>.button{
 	line-height: var(--header-height);
 }
 
-.button>input[type="number"]{
+.button>input[type="number"] {
 	outline: none;
 	height: calc(var(--header-height) - 30px);
-	margin-left: 10px; 
+	margin-left: 10px;
 	margin-top: 15px;
 	margin-bottom: 13px;
 	padding: 0;
@@ -366,32 +360,32 @@ header>.button{
 
 input[type="submit"] {
 	margin-top: 15px;
-	margin-bottom: 15px; 
-    margin-left: calc(30px - var(--header-height));
-    height: calc(var(--header-height) - 30px);
-    width: calc(var(--header-height) - 30px);
-    font-size: 20px;
-    padding: 0;
-    background: transparent;
-    color: var(--black);
-    border: 0;
-    cursor: pointer;
-    -webkit-appearance: none;
-    transition: color ease-out var(--transition-time-fast);
+	margin-bottom: 15px;
+	margin-left: calc(30px - var(--header-height));
+	height: calc(var(--header-height) - 30px);
+	width: calc(var(--header-height) - 30px);
+	font-size: 20px;
+	padding: 0;
+	background: transparent;
+	color: var(--black);
+	border: 0;
+	cursor: pointer;
+	-webkit-appearance: none;
+	transition: color ease-out var(--transition-time-fast);
 }
 
 input[type="submit"]:hover {
-    color: var(--secondary-color);
-    transition: color ease-out var(--transition-time-fast);
+	color: var(--secondary-color);
+	transition: color ease-out var(--transition-time-fast);
 }
 
-.button>*{
+.button>* {
 	float: left;
 	user-select: none;
 	cursor: default;
 }
 
-.button>.highlight{
+.button>.highlight {
 	position: absolute;
 	right: 151px;
 	bottom: 13px;
@@ -407,25 +401,25 @@ input[type="submit"]:hover {
 	transform: translateX(100%);
 }
 
-header a{
+header a {
 	color: var(--black);
-	transition: color ease-out var(--transition-time-fast);	
+	transition: color ease-out var(--transition-time-fast);
 }
 
-header a:hover{
+header a:hover {
 	color: var(--secondary-color);
 }
 
-span.secondary-color{
-	color: var(--secondary-color);	
+span.secondary-color {
+	color: var(--secondary-color);
 }
 
-.card{
+.card {
 	border-radius: 4px;
 	position: relative;
 }
 
-.landing-section{
+.landing-section {
 	float: left;
 	margin-left: 128px;
 	margin-right: 64px;
@@ -437,7 +431,7 @@ span.secondary-color{
 	background-position: center;
 }
 
-.landing-section>.title{
+.landing-section>.title {
 	margin: 0;
 	top: 20px;
 	left: -64px;
@@ -453,21 +447,21 @@ span.secondary-color{
 	line-height: 100%;
 }
 
-.landing-section table{
+.landing-section table {
 	width: 100%;
 }
 
-.landing-section td{
+.landing-section td {
 	font-size: 30px;
 	font-weight: 500;
 }
 
-.landing-section td+td{
+.landing-section td+td {
 	font-size: 26px;
 	font-weight: 300;
 }
 
-.landing-section>.content{
+.landing-section>.content {
 	border-radius: 4px;
 	position: absolute;
 	padding: 20px;
@@ -481,49 +475,49 @@ span.secondary-color{
 	margin: 0;
 }
 
-.landing-section-1{
+.landing-section-1 {
 	background-image: url('../image/1');
 }
 
-.landing-section-1>.title{
-	background-color: var(--primary-color);	
+.landing-section-1>.title {
+	background-color: var(--primary-color);
 }
 
-.landing-section-1>.content{
-	color: var(--primary-color);	
+.landing-section-1>.content {
+	color: var(--primary-color);
 }
 
-.landing-section-2{
+.landing-section-2 {
 	background-image: url('../image/2');
 }
 
-.landing-section-2>.title{
+.landing-section-2>.title {
 	background-color: var(--tertiary-color);
 }
 
-.landing-section-2>.content{
+.landing-section-2>.content {
 	color: var(--tertiary-color);
 }
 
-.landing-section-3{
+.landing-section-3 {
 	background-image: url('../image/3');
 }
 
-.landing-section-3>.title{
+.landing-section-3>.title {
 	background-color: var(--quaternary-color);
 }
 
-.landing-section-3>.content{
+.landing-section-3>.content {
 	color: var(--quaternary-color);
 }
 
-.login-page{
+.login-page {
 	position: relative;
 	width: 100%;
 	height: calc(100vh - var(--header-height));
 }
 
-.login-page>form>h1{
+.login-page>form>h1 {
 	margin: 0;
 	height: 80px;
 	text-align: right;
@@ -535,7 +529,7 @@ span.secondary-color{
 	line-height: 80px;
 }
 
-.login-page>form{
+.login-page>form {
 	position: absolute;
 	width: 80%;
 	height: 257px;
@@ -549,7 +543,7 @@ span.secondary-color{
 	transform: translate(-50%, -50%);
 }
 
-.login-page>form>.error-message{
+.login-page>form>.error-message {
 	position: absolute;
 	left: 50%;
 	bottom: -32px;
@@ -560,8 +554,8 @@ span.secondary-color{
 	transform: translate(-50%, 100%);
 }
 
-.login-page button{
-	border:0;
+.login-page button {
+	border: 0;
 	width: 150px;
 	border-radius: 4px;
 	padding: 8px;
@@ -570,19 +564,19 @@ span.secondary-color{
 	color: var(--black);
 	font-family: var(--font-body);
 	font-size: 30px;
-	transition: color , box-shadow ease-out var(--transition-time-fast);
+	transition: color, box-shadow ease-out var(--transition-time-fast);
 	transform: translateX(-50%);
 }
 
-.login-page button:hover{
+.login-page button:hover {
 	color: var(--white);
 }
 
-.login-page>form input{
+.login-page>form input {
 	outline: none;
 	height: calc(var(--header-height) - 26px);
 	width: 40%;
-	margin-left: 10px; 
+	margin-left: 10px;
 	margin-top: 15px;
 	margin-bottom: 13px;
 	padding: 0;
@@ -594,7 +588,7 @@ span.secondary-color{
 	background-color: transparent;
 }
 
-.login-page>form .highlight{
+.login-page>form .highlight {
 	position: absolute;
 	left: 50%;
 	margin-left: 10px;
@@ -609,12 +603,11 @@ span.secondary-color{
 	background-color: var(--secondary-color);
 }
 
-
-.login-page>form>div{
+.login-page>form>div {
 	position: relative;
 }
 
-.login-page>form>div>label{
+.login-page>form>div>label {
 	text-align: right;
 	float: left;
 	height: 64px;
@@ -622,4 +615,18 @@ span.secondary-color{
 	font-size: 32px;
 	line-height: 60px;
 	width: 50%;
+}
+
+.patients-container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.patients-container>.patient {
+	float: left;
+	width: calc(50% - 20px);
+	height: 200px;
+	margin: 10px;
+	background: white;
 }

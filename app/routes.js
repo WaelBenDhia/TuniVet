@@ -127,6 +127,6 @@ module.exports = (server, passport) => {
 	});
 
 	server.get('*', (req, res) => {
-		res.send("Vous avez l'air perdu", 404);
+		res.status(404).send("Vous avez l'air perdu");
 	});
 };

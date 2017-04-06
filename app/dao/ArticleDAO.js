@@ -2,7 +2,7 @@ const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection();
+var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
 
 var getArticle = (id) => {
 	return new Promise((fulfill, reject) => {

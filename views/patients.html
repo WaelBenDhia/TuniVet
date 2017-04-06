@@ -1,23 +1,35 @@
 <!doctype html>
 <html>
+
 <head>
 </head>
+
 <body>
-<div>
-    <h1>Add new patient</h1>
-    <form action="/patient/insert" method="post">
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" name="name">
-        </div>
-        <div class="form-group">
-            <label>Content</label>
-            <input type="text" class="form-control" name="condition">
-        </div>
+    <div>
+        <h1>Add new patient</h1>
+        <form action="/patient/insert" method="post">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+                <label>Content</label>
+                <input type="text" class="form-control" name="condition">
+            </div>
 
-        <button type="submit" class="btn btn-warning btn-lg">Inserer Patient</button>
-    </form>
-
-</div>
+            <button type="submit" class="btn btn-warning btn-lg">Inserer Patient</button>
+        </form>
+        <div class="patients-container">
+            <div class="patient elevation-3 card" ng-repeat="patient in patients">
+                <div>Identifiant:{{patient.id}}</div>
+                <div>Nom:{{patient.name}}</div>
+                <div>Date d'entree:{{patient.entryDate}}</div>
+                <div>Condition:{{patient.condition}}</div>
+                <div>Derniere mise a jour:{{patient.updateDate}}</div>
+                <div>Date de sortie:{{patient.exitDate}}</div>
+                <button class="elevation-lift" type="submit" ng-disabled="dataLoading">Login</button>
+            </div>
+        </div>
 </body>
+
 </html>

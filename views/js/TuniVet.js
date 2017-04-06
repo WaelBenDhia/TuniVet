@@ -98,13 +98,24 @@ app
 		};
 	})
 	.controller('articlesController', function ($scope) {})
-	.controller('patientsController', function ($scope) {
-
+	.controller('patientsController', function ($scope, patientsService) {
+		$scope.patients = [];
+		patientsService.getAll().then(res => {
+			$scope.patients = res;
+			console.log(res);
+		});
 	})
 	.factory('patientsService', function ($http) {
 		var patientsService = {};
 
-		patientsService.getAll = $http.get('/patients');
+		patientsService.getAll = () => {
+			return new Promise((resolve, reject) => {
+				$http.get('/patients').then(res => {
+						resolve(res.data);
+					})
+					.catch(e => reject(e));
+			});
+		};
 
 		return patientsService;
 	})

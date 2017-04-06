@@ -6,7 +6,7 @@ const UserDAO = require('./dao/UserDAO');
 const ArticleDAO = require('./dao/ArticleDAO');
 const BackgroundImageDAO = require('./dao/BackgroundImageDAO');
 
-var getConnection = ConnectionHandler.getConnection();
+var getConnection = ConnectionHandler.getConnection;
 
 var dropTables = () => {
 	var dropQuery = `drop table if exists ${Contract.BackgroundImagesEntry.TABLE_NAME}, ${Contract.ArticlesEntry.TABLE_NAME}, ${Contract.PatientsEntry.TABLE_NAME}, ${Contract.UsersEntry.TABLE_NAME};`;

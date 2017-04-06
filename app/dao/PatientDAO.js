@@ -2,7 +2,7 @@ const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection();
+var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
 
 var insertPatient = (patient, user) => {
 	return new Promise((fulfill, reject) => {
@@ -81,7 +81,7 @@ var getPatient = (id) => {
 	});
 };
 
-var getPatients = id => {
+var getPatients = () => {
 	return new Promise((fulfill, reject) => {
 		var query = `select * from ${Contract.PatientsEntry.TABLE_NAME}`;
 		getConnection()

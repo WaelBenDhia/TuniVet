@@ -1,7 +1,7 @@
 const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection();
+var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
 
 var getAllLandingPageInfo = () => {
 	return new Promise((fulfill, reject) => {
