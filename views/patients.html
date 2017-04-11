@@ -5,45 +5,72 @@
 </head>
 
 <body>
-    <div>
-        <h1>Add new patient</h1>
-        <form action="/patient/insert" method="post">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" class="form-control" name="name">
+    <div class="header-spacer"></div>
+    <div class="patients-form" ng-if="showForm">
+        <div ng-click="closeForm()" class="top"></div>
+        <div ng-click="closeForm()" class="bottom"></div>
+        <div ng-click="closeForm()" class="left"></div>
+        <div ng-click="closeForm()" class="right"></div>
+        <div class="elevation-5 card">
+            <div>
+                <span>Nom:</span>
+                <input ng-model="currentPatient.name" type="text">
+                <span class="highlight">{{currentPatient.name}}</span>
             </div>
-            <div class="form-group">
-                <label>Content</label>
-                <input type="text" class="form-control" name="condition">
+            <div>
+                <span>Condition:</span>
+                <input ng-model="currentPatient.condition" type="text">
+                <span class="highlight">{{currentPatient.condition}}</span>
             </div>
-
-            <button type="submit" class="btn btn-warning btn-lg">Inserer Patient</button>
-        </form>
-        <div class="patients-container">
-            <div class="patient elevation-3 card" ng-repeat="patient in patients">
-                <div>
-                    <span>Nom:</span>
-                    <span>{{patient.name}}</span>
-                </div>
-                <div>
-                    <span>Date d'entree:</span>
-                    <span>{{patient.entryDate}}</span>
-                </div>
-                <div>
-                    <span>Condition:</span>
-                    <span>{{patient.condition}}</span>
-                </div>
-                <div>
-                    <span>Derniere mise a jour:</span>
-                    <span>{{patient.updateDate}}</span>
-                </div>
-                <div>
-                    <span>Date de sortie:</span>
-                    <span>{{patient.exitDate}}</span>
-                </div>
-                <button class="elevation-lift" type="submit" ng-disabled="dataLoading">Modifier</button>
+            <div>
+                <span>Date de sortie:</span>
+                <input ng-model="currentPatient.exitDate" min="{{currentPatient.entryDate | date:'yyyy-MM-dd'}}" type="date">
+                <span class="highlight">{{currentPatient.exitDate | date:'yyyy/MM/dd'}}</span>
+            </div>
+            <button ng-click="send()" type="submit" class="elevation-lift">Sauvegarde</button>
+        </div>
+    </div>
+    <div class="patients-search">
+        <span>Recherche:</span>
+        <input type="text" ng-model="search.name" ng-change="updateFilter(true)">
+        <span class="highlight">{{search.name}}</span>
+        <button class="elevation-lift" ng-click="setCurrent()" ng-disabled="dataLoading">Ajouter</button>
+    </div>
+    <div class="patients-container">
+        <div class="patient elevation-3 card stagger" ng-repeat="patient in patients track by patient.id">
+            <div>
+                {{patient.id}}. {{patient.name}}
+            </div>
+            <div>
+                <span>Date d'entree:</span>
+                <span>{{patient.entryDate | frenchDate}}</span>
+            </div>
+            <div>
+                <span>Condition:</span>
+                <span>{{patient.condition}}</span>
+            </div>
+            <div>
+                <span>Derniere mise a jour:</span>
+                <span>{{patient.updateDate | frenchDate}}</span>
+            </div>
+            <div>
+                <span>Date de sortie:</span>
+                <span>{{patient.exitDate | frenchDate}}</span>
+            </div>
+            <button class="elevation-lift" ng-click="setCurrent(patient)">Modifier</button>
+            <button class="elevation-lift" ng-click="delete(patient)">Supprimer</button>
+        </div>
+        <div class="patient elevation-3 card" ng-if="patients.length === 0">
+            <div>
+                Aucun resultat
             </div>
         </div>
+    </div>
+    <div class="paginator">
+        <a ng-class="(search.page == 0) ? 'inactive' : ''" ng-click="changePage(-1)">←</a>
+        <div>{{search.page+1}}/{{pages}}</div>
+        <a ng-class="(search.page + 1  == pages) ? 'inactive' : ''" ng-click="changePage(1)">→</a>
+    </div>
 </body>
 
 </html>

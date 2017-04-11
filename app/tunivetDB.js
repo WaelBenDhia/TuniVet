@@ -93,9 +93,11 @@ module.exports = {
 	getUserByEmail: UserDAO.getUserByEmail,
 	insertPatient: PatientDAO.insertPatient,
 	updatePatient: PatientDAO.updatePatient,
+	deletePatient: PatientDAO.deletePatient,
 	getPatient: PatientDAO.getPatient,
 	insertArticle: ArticleDAO.insertArticle,
 	getArticle: ArticleDAO.getArticle,
 	getImage: BackgroundImageDAO.getBackgroundImage,
-	getPatients: PatientDAO.getPatients
+	getPatients: PatientDAO.getPatients,
+	searchPatients: PatientDAO.searchPatients
 };

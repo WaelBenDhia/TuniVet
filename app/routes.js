@@ -5,7 +5,7 @@ const handelbars = require('express-handlebars');
 var isLoggedIn = (req, res, next) => {
 	if (req.isAuthenticated())
 		return next();
-	res.redirect('/login');
+	res.sendStatus(401);
 };
 
 module.exports = (server, passport) => {
@@ -27,6 +27,10 @@ module.exports = (server, passport) => {
 	server.get('/css/fonts/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/css/fonts/${req.params.file}`)));
 
 	server.get('/js/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/${req.params.file}`)));
+
+	server.get('/js/App/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/${req.params.file}`)));
+
+	server.get('/js/App/Controllers/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/Controllers/${req.params.file}`)));
 
 	server.get('/templates/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/${req.params.file}`)));
 
@@ -66,13 +70,29 @@ module.exports = (server, passport) => {
 			.catch(err => res.send(err));
 	});
 
-	server.post('/patient/insert', isLoggedIn, (req, res) => {
-		DB.insertPatient({
+	server.post('/patient', isLoggedIn, (req, res) => {
+		DB.insertPatient(req.body, req.user)
+			.then(insertId => res.status(200).send({
+				id: insertId
+			}))
+			.catch(err => res.status(400).send(err));
+	});
+
+	server.put('/patient/:id', isLoggedIn, (req, res) => {
+		DB.updatePatient({
 				name: req.body.name,
-				condition: req.body.condition
+				condition: req.body.condition,
+				exitDate: req.body.exitDate,
+				id: req.params.id
 			}, req.user)
-			.then(insertId => res.redirect('/patient/' + insertId))
-			.catch(err => res.send(err));
+			.then(insertId => res.status(200).send("UPDATE SUCCESS"))
+			.catch(err => res.status(400).send(err));
+	});
+
+	server.delete('/patient/:id', isLoggedIn, (req, res) => {
+		DB.deletePatient(req.params.id, req.user)
+			.then(insertId => res.status(200).send("DELETE SUCCESS"))
+			.catch(err => res.status(400).send(err));
 	});
 
 	server.post('/login', (req, res, next) => {
@@ -102,8 +122,8 @@ module.exports = (server, passport) => {
 		res.send(user);
 	});
 
-	server.get('/patients', (req, res) => {
-		DB.getPatients()
+	server.get('/patients', isLoggedIn, (req, res) => {
+		DB.searchPatients(req.query.name, req.query.page || 0, req.query.items || 10)
 			.then(patients => res.send(patients))
 			.catch(err => res.send(err));
 	});

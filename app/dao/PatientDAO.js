@@ -14,13 +14,40 @@ var insertPatient = (patient, user) => {
 		if (err)
 			reject(err);
 		else {
+			var query = `insert into ${Contract.PatientsEntry.TABLE_NAME}(`;
+			var date = new Date(patient.exitDate);
+			var formatedMysqlString = (new Date((new Date((new Date(date)).toISOString())).getTime() - ((new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, 19).replace('T', ' ');
+
+			if (patient.condition)
+				query += `\`${Contract.PatientsEntry.CONDITION}\``;
+			if (patient.condition && patient.name)
+				query += ", ";
+			if (patient.name)
+				query += `\`${Contract.PatientsEntry.NAME}\``;
+			if (patient.name && patient.exitDate && !isNaN(date.getTime()))
+				query += ", ";
+			if (patient.exitDate && !isNaN(date.getTime()))
+				query += `\`${Contract.PatientsEntry.EXIT_DATE}\``;
+
+			query += `) values (`;
+
+			if (patient.condition)
+				query += `'${patient.condition}'`;
+			if (patient.condition && patient.name)
+				query += ", ";
+			if (patient.name)
+				query += `'${patient.name}'`;
+			if (patient.name && patient.exitDate && !isNaN(date.getTime()))
+				query += ", ";
+			if (patient.exitDate && !isNaN(date.getTime()))
+				query += `'${formatedMysqlString}'`;
+
+			query += `);`;
+
 			getConnection()
 				.then(con => con
 					.query(
-						`insert into ${Contract.PatientsEntry.TABLE_NAME}(\`${Contract.PatientsEntry.NAME}\`,\`${Contract.PatientsEntry.CONDITION}\`)values (?, ?)`, [
-							patient.name,
-							patient.condition
-						],
+						query,
 						(err, OkPacket) => {
 							con.release();
 							if (err)
@@ -44,13 +71,21 @@ var updatePatient = (patient, user) => {
 		if (err)
 			reject(err);
 		else {
+			var query = `update ${Contract.PatientsEntry.TABLE_NAME} set`;
+			var date = new Date(patient.exitDate);
+			if (patient.condition)
+				query += ` \`${Contract.PatientsEntry.CONDITION}\`='${patient.condition}'`;
+			if (patient.name)
+				query += `, \`${Contract.PatientsEntry.NAME}\`='${patient.name}'`;
+			if (patient.exitDate && !isNaN(date.getTime())) {
+				var formatedMysqlString = (new Date((new Date((new Date(date)).toISOString())).getTime() - ((new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, 19).replace('T', ' ');
+				query += `, \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
+			}
+			query += ` where \`${Contract.PatientsEntry.ID}\`=${patient.id};`;
 			getConnection()
 				.then(con => con
 					.query(
-						`update ${Contract.PatientsEntry.TABLE_NAME} set \`${Contract.PatientsEntry.CONDITION}\` = ? where \`${Contract.PatientsEntry.ID}\` = ? ;`, [
-							patient.condition,
-							patient.id
-						],
+						query,
 						(err, result) => {
 							con.release();
 							if (err)
@@ -61,6 +96,24 @@ var updatePatient = (patient, user) => {
 				)
 				.catch(err => reject(err));
 		}
+	});
+};
+
+var deletePatient = (id, user) => {
+	return new Promise((fulfill, reject) => {
+		getConnection()
+			.then(con => con
+				.query(
+					`delete from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} = '${id}'`,
+					(err, result) => {
+						con.release();
+						if (err)
+							reject(err);
+						else
+							fulfill(result);
+					})
+			)
+			.catch(err => reject(err));
 	});
 };
 
@@ -98,9 +151,49 @@ var getPatients = () => {
 	});
 };
 
+var searchPatients = (filterName, pageNumber, itemsPerPage) => {
+	return new Promise((fulfill, reject) => {
+		var patients = {
+			count: 0,
+			data: []
+		};
+		var query = `select * from ${Contract.PatientsEntry.TABLE_NAME} `;
+		if (filterName)
+			query += `where instr( lower(${Contract.PatientsEntry.NAME}), lower('${filterName}')) `;
+		query += `order by ${Contract.PatientsEntry.ENTRY_DATE} desc `;
+		query += `limit ${pageNumber * itemsPerPage}, ${itemsPerPage}`;
+		var countQuery = `select count(*) as 'count' from ${Contract.PatientsEntry.TABLE_NAME} `;
+		if (filterName)
+			countQuery += `where instr( lower(${Contract.PatientsEntry.NAME}), lower('${filterName}')) `;
+		getConnection()
+			.then(con => con
+				.query(query, (err, rows) => {
+					if (err) {
+						con.release();
+						reject(err);
+					} else {
+						patients.data = (Parsers.parsePatientsFromRowData(rows));
+						con.query(countQuery, (err, rows) => {
+							con.release();
+							if (err)
+								reject(err);
+							else {
+								patients.count = rows[0].count;
+								fulfill(patients);
+							}
+						});
+					}
+				})
+			)
+			.catch(err => reject(err));
+	});
+};
+
 module.exports = {
 	insertPatient: insertPatient,
 	updatePatient: updatePatient,
+	deletePatient: deletePatient,
 	getPatient: getPatient,
-	getPatients: getPatients
+	getPatients: getPatients,
+	searchPatients: searchPatients
 };
