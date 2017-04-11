@@ -1,6 +1,27 @@
 angular.module('tunivetApp').
-controller('tunivetController', function ($scope, $location, $rootScope, AuthService, Session, AUTH_EVENTS) {
+controller('tunivetController', function ($scope, $location, $rootScope, patientsService, AuthService, Session, AUTH_EVENTS) {
     $scope.isLoggedIn = Session.getUser() !== null;
+    $scope.showPatient = false;
+    $scope.patient = {
+        id: 0,
+        name: "",
+        condition: ""
+    };
+
+    $scope.closePatient = () => {
+        $scope.showPatient = false;
+    };
+
+    $scope.getPatient = () => {
+        patientsService.getOne($scope.patient.id)
+            .then(suc => {
+                $scope.patient = suc;
+                $scope.showPatient = true;
+                $scope.$apply();
+            })
+            .catch(err => alert(err.data));
+
+    };
 
     AuthService.getUserStatus();
 

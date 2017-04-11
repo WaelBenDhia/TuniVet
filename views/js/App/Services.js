@@ -12,6 +12,14 @@ factory('patientsService', function ($http) {
         );
     };
 
+    patientsService.getOne = (id) => {
+        return new Promise((resolve, reject) =>
+            $http.get('/patient/' + id)
+            .then(res => resolve(res.data))
+            .catch(e => reject(e))
+        );
+    };
+
     patientsService.update = (patient) => {
         return new Promise((resolve, reject) =>
             $http

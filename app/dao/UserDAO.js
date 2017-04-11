@@ -3,7 +3,7 @@ const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
 const IsEmail = require('isemail');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
+var connection = require('../../utils/ConnectionHandler.js').connection;
 
 var authenticateUser = (user) => {
 	return new Promise((fulfill, reject) => {
@@ -68,63 +68,31 @@ var insertUserIfNotExists = (user) => {
 				.then(passwordAndSalt => {
 					user.password = passwordAndSalt.password;
 					user.salt = passwordAndSalt.salt;
-					return getConnection();
+					return connection.query(`insert into ${Contract.UsersEntry.TABLE_NAME}(\`${Contract.UsersEntry.USERNAME}\`,\`${Contract.UsersEntry.EMAIL}\`,\`${Contract.UsersEntry.FIRST_NAME}\`,\`${Contract.UsersEntry.LAST_NAME}\`,\`${Contract.UsersEntry.PASSWORD}\`,\`${Contract.UsersEntry.SALT}\`) values ('${user.username}', '${user.email}', '${user.firstName}', '${user.lastName}', '${user.password}', '${user.salt}')`);
 				})
 				.catch(err => reject(err))
-				.then(con => con
-					.query(
-						`insert into ${Contract.UsersEntry.TABLE_NAME}(\`${Contract.UsersEntry.USERNAME}\`,\`${Contract.UsersEntry.EMAIL}\`,\`${Contract.UsersEntry.FIRST_NAME}\`,\`${Contract.UsersEntry.LAST_NAME}\`,\`${Contract.UsersEntry.PASSWORD}\`,\`${Contract.UsersEntry.SALT}\`) values (?, ?, ?, ?, ? ,?)`, [
-							user.username,
-							user.email,
-							user.firstName,
-							user.lastName,
-							user.password,
-							user.salt
-						],
-						(err, OkPacket) => {
-							con.release();
-							if (err)
-								reject(err);
-							else
-								fulfill(OkPacket);
-						})
-				);
+				.then(OkPacket => fulfill(OkPacket))
+				.catch(err => reject(err));
 		}
 	});
 };
 
 var getUser = (username) => {
-	return new Promise((fulfill, reject) => {
-		var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.USERNAME} ='${username}'`;
-		getConnection()
-			.then(con => con
-				.query(query, (err, rows) => {
-					con.release();
-					if (err)
-						reject(err);
-					else
-						fulfill(Parsers.parseUsersFromRowData(rows)[0]);
-				})
-			)
-			.catch(err => reject(err));
-	});
+	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.USERNAME} ='${username}'`;
+	return new Promise((fulfill, reject) =>
+		connection.query(query)
+		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
+		.catch(err => reject(err))
+	);
 };
 
 var getUserByEmail = (email) => {
-	return new Promise((fulfill, reject) => {
-		var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.EMAIL} ='${email}'`;
-		getConnection()
-			.then(con => con
-				.query(query, (err, rows) => {
-					con.release();
-					if (err)
-						reject(err);
-					else
-						fulfill(Parsers.parseUsersFromRowData(rows)[0]);
-				})
-			)
-			.catch(err => reject(err));
-	});
+	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.EMAIL} ='${email}'`;
+	return new Promise((fulfill, reject) =>
+		connection.query(query)
+		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
+		.catch(err => reject(err))
+	);
 };
 
 module.exports = {

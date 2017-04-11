@@ -28,11 +28,38 @@
 		<a href="#/patients" style="right: 361px; width: 141px;" ng-if="isLoggedIn" class="button">Inserer Patient</a>
 		<div class="button" style="right: 110px; width: 211px;">
 			<span>Suivi:</span>
-			<input type="number" ng-model="patientId">
+			<input type="number" ng-model="patient.id">
 			<span class="highlight">{{patientId}}</span>
-			<input type="submit" value="→">
+			<input ng-click="getPatient()" type="submit" value="→">
 		</div>
 	</header>
+	<div class="form" ng-if="showPatient">
+		<div ng-click="closePatient()" class="top"></div>
+		<div ng-click="closePatient()" class="bottom"></div>
+		<div ng-click="closePatient()" class="left"></div>
+		<div ng-click="closePatient()" class="right"></div>
+		<div class="elevation-5 card patient">
+			<div>
+				{{patient.id}}. {{patient.name}}
+			</div>
+			<div>
+				<span>Date d'entree:</span>
+				<span>{{patient.entryDate | frenchDate}}</span>
+			</div>
+			<div>
+				<span>Condition:</span>
+				<span>{{patient.condition}}</span>
+			</div>
+			<div>
+				<span>Derniere mise a jour:</span>
+				<span>{{patient.updateDate | frenchDate}}</span>
+			</div>
+			<div>
+				<span>Date de sortie:</span>
+				<span>{{patient.exitDate | frenchDate}}</span>
+			</div>
+		</div>
+	</div>
 	<div class="view-holder" ng-view=""></div>
 	<footer>
 		<p>Site web conçu et développé Par <a href="http://waelbendhia.github.io/">Waël Ben Dhia</a>.</p>

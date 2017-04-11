@@ -24,6 +24,6 @@ controller('loginController', function ($scope, $location, $timeout, AuthService
             if (success) {
                 $location.path('/');
             }
-        }, success ? 1000 : 2000);
+        }, success ? 0 : 2000);
     };
 });

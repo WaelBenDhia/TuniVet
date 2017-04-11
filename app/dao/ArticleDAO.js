@@ -2,24 +2,16 @@ const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
+var connection = require('../../utils/ConnectionHandler.js').connection;
 
 var getArticle = (id) => {
-	return new Promise((fulfill, reject) => {
-		var query = `select * from ${Contract.ArticlesEntry.TABLE_NAME} where ${Contract.ArticlesEntry.ID} ='${id}'`;
-		getConnection()
-			.then(con => {
-				con.query(query, (err, rows) => {
-					con.release();
-					if (err)
-						reject(err);
-					else {
-						fulfill(Parsers.parseArticlesFromRowData(rows)[0]);
-					}
-				});
-			})
-			.catch(err => reject(err));
-	});
+	var query = `select * from ${Contract.ArticlesEntry.TABLE_NAME} where ${Contract.ArticlesEntry.ID} ='${id}'`;
+	return new Promise((fulfill, reject) =>
+		connection
+		.query(query)
+		.then(rows => fulfill(Parsers.parseArticlesFromRowData(rows)[0]))
+		.catch(err => reject(err))
+	);
 };
 
 var insertArticle = (article, user) => {
@@ -32,23 +24,9 @@ var insertArticle = (article, user) => {
 		if (err)
 			reject(err);
 		else {
-			getConnection()
-				.then(con => {
-					article.author = user.username;
-					con.query(
-						`insert into ${Contract.ArticlesEntry.TABLE_NAME}(\`${Contract.ArticlesEntry.NAME}\`,\`${Contract.ArticlesEntry.AUTHOR}\`,\`${Contract.ArticlesEntry.CONTENT}\`) values (?, ?, ?)`, [
-							article.name,
-							article.author,
-							article.content
-						],
-						(err, OkPacket) => {
-							con.release();
-							if (err)
-								reject(err);
-							else
-								fulfill(OkPacket.insertId);
-						});
-				})
+			article.author = user.username;
+			connection.query(`insert into ${Contract.ArticlesEntry.TABLE_NAME}(\`${Contract.ArticlesEntry.NAME}\`,\`${Contract.ArticlesEntry.AUTHOR}\`,\`${Contract.ArticlesEntry.CONTENT}\`) values ('${article.name}', '${article.author}', '${article.content}')`)
+				.then(OkPacket => fulfill(OkPacket.insertId))
 				.catch(err => reject(err));
 		}
 	});
@@ -65,25 +43,13 @@ var updateArticle = (article, user) => {
 			err = (err ? err + '\n' : '') + "Article is missing body";
 		if (err)
 			reject(err);
-		else
-			getConnection()
-			.then(con => {
-				article.author = user.username;
-				con.query(
-					`update ${Contract.ArticlesEntry.TABLE_NAME} sset \`${Contract.ArticlesEntry.NAME}\` = ?, sset \`${Contract.ArticlesEntry.CONTENT}\` = ? swhere \`${Contract.ArticlesEntry.ID}\` = ? ;`, [
-						article.name,
-						article.content,
-						article.id
-					],
-					(err, OkPacket) => {
-						con.release();
-						if (err)
-							reject(err);
-						else
-							fulfill(OkPacket);
-					});
-			})
-			.catch(err => reject(err));
+		else {
+			article.author = user.username;
+			connection.query(
+					`update ${Contract.ArticlesEntry.TABLE_NAME} sset \`${Contract.ArticlesEntry.NAME}\` = '${article.name}', sset \`${Contract.ArticlesEntry.CONTENT}\` = '${article.content}' where \`${Contract.ArticlesEntry.ID}\` = '${article.id}' ;`)
+				.then(OkPacket => fulfill(OkPacket))
+				.catch(err => reject(err));
+		}
 	});
 };
 

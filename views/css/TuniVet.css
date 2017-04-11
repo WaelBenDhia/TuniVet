@@ -440,6 +440,13 @@ span.secondary-color {
 	background-position: center;
 }
 
+.landing-section>button {
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+	transform: none !important;
+}
+
 .landing-section>.title {
 	margin: 0;
 	top: 20px;
@@ -563,6 +570,7 @@ span.secondary-color {
 	transform: translate(-50%, 100%);
 }
 
+.landing-section button,
 .patients-search button,
 .patients-form button,
 .patient button,
@@ -656,7 +664,7 @@ span.secondary-color {
 	transition-duration: 0s;
 }
 
-.patients-container>.patient>button {
+.patient>button {
 	position: absolute;
 	font-size: 120%;
 	padding: 2px;
@@ -669,11 +677,11 @@ span.secondary-color {
 	overflow: hidden;
 }
 
-.patients-container>.patient>button:nth-of-type(2) {
+.patient>button:nth-of-type(2) {
 	right: calc(20% + 20px);
 }
 
-.patients-container>.patient>div {
+.patient>div {
 	float: left;
 	padding-left: 2.5%;
 	padding-right: 2.5%;
@@ -682,7 +690,7 @@ span.secondary-color {
 	font-size: 20px;
 }
 
-.patients-container>.patient>div:nth-child(1) {
+.patient>div:nth-child(1) {
 	white-space: nowrap;
 	overflow: hidden;
 	float: left;
@@ -695,7 +703,7 @@ span.secondary-color {
 	border-bottom: 1px solid var(--white);
 }
 
-.patients-container>.patient>div>span {
+.patient>div>span {
 	display: block;
 	float: left;
 	width: 100%;
@@ -704,7 +712,7 @@ span.secondary-color {
 	overflow: hidden;
 }
 
-.patients-container>.patient>div>span:nth-child(1) {
+.patient>div>span:nth-child(1) {
 	padding-left: 5px;
 	font-family: var(--font-heading);
 	color: var(--primary-color);
@@ -713,13 +721,13 @@ span.secondary-color {
 	line-height: 150%;
 }
 
-.patients-container>.patient>div>span:nth-child(2) {
+.patient>div>span:nth-child(2) {
 	padding-left: 5px;
 	height: 70%;
 	font-size: 20px;
 }
 
-.patients-form {
+.form {
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -729,71 +737,71 @@ span.secondary-color {
 	background: rgba(0, 0, 0, 0.25);
 }
 
-.patients-form.ng-enter {
+.form.ng-enter {
 	transform: none;
 }
 
-.patients-form.ng-leave.ng-leave-active {
+.form.ng-leave.ng-leave-active {
 	transform: none;
 }
 
-.patients-form>div.card {
+.form>div.card {
 	transform: none;
 	transition: transform var(--transition-time-slow) ease-out;
 }
 
-.patients-form.ng-enter.ng-enter-active>div.card,
-.patients-form.ng-leave>div.card {
+.form.ng-enter.ng-enter-active>div.card,
+.form.ng-leave>div.card {
 	transform: none;
 }
 
-.patients-form.ng-enter>div.card {
+.form.ng-enter>div.card {
 	transform: translateY(40px);
 }
 
-.patients-form.ng-leave.ng-leave-active>div.card {
+.form.ng-leave.ng-leave-active>div.card {
 	transform: translateY(40px);
 }
 
-.patients-form>.bottom,
-.patients-form>.top,
-.patients-form>.left,
-.patients-form>.right {
+.form>.bottom,
+.form>.top,
+.form>.left,
+.form>.right {
 	position: absolute;
 	background: transparent;
 }
 
-.patients-form>.bottom,
-.patients-form>.top {
+.form>.bottom,
+.form>.top {
 	width: 100%;
 	height: 35%;
 	left: 0;
 }
 
-.patients-form>.left,
-.patients-form>.right {
+.form>.left,
+.form>.right {
 	top: 35%;
 	width: 30%;
 	height: 30%;
 }
 
-.patients-form>.top {
+.form>.top {
 	top: 0;
 }
 
-.patients-form>.bottom {
+.form>.bottom {
 	top: 65%;
 }
 
-.patients-form>.left {
+.form>.left {
 	left: 0;
 }
 
-.patients-form>.right {
+.form>.right {
 	left: 70%;
 }
 
-.patients-form>div {
+.form>div {
 	position: absolute;
 	height: 30%;
 	width: 40%;
@@ -802,10 +810,14 @@ span.secondary-color {
 	background: white;
 }
 
+.patients-form>div {
+	height: 37.5%;
+}
+
 .patients-form>div.card>div {
 	position: relative;
 	width: 100%;
-	height: 25%;
+	height: 20%;
 }
 
 .patients-form>div.card>div>span {

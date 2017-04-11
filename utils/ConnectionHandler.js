@@ -1,4 +1,4 @@
-const MySql = require('mysql');
+const MySql = require('promise-mysql');
 
 var db_host = process.env.MYSQL_HOST || "localhost";
 var db_user = process.env.MYSQL_USER || "wael";
@@ -14,17 +14,6 @@ const pool = MySql.createPool({
 	debug: false
 });
 
-var getConnection = () => {
-	return new Promise((fulfill, reject) => {
-		pool.getConnection((err, connection) => {
-			if (err)
-				reject(err);
-			else
-				fulfill(connection);
-		});
-	});
-};
-
 module.exports = {
-	getConnection: getConnection
+	connection: pool
 };

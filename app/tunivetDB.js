@@ -6,21 +6,15 @@ const UserDAO = require('./dao/UserDAO');
 const ArticleDAO = require('./dao/ArticleDAO');
 const BackgroundImageDAO = require('./dao/BackgroundImageDAO');
 
-var getConnection = ConnectionHandler.getConnection;
+var connection = ConnectionHandler.connection;
 
 var dropTables = () => {
 	var dropQuery = `drop table if exists ${Contract.BackgroundImagesEntry.TABLE_NAME}, ${Contract.ArticlesEntry.TABLE_NAME}, ${Contract.PatientsEntry.TABLE_NAME}, ${Contract.UsersEntry.TABLE_NAME};`;
-	return new Promise((fulfill, reject) => {
-		getConnection().then((con) => {
-			con.query(dropQuery, (err, rows) => {
-				con.release();
-				if (err)
-					reject(err);
-				else
-					fulfill(rows);
-			});
-		});
-	});
+	return new Promise((fulfill, reject) =>
+		connection.query(dropQuery)
+		.then(rows => fulfill(rows))
+		.catch(err => reject(err))
+	);
 };
 
 var createTables = () => {
@@ -36,55 +30,39 @@ var createTables = () => {
 	var createLandingPageInfoQuery = `create table if not exists ${Contract.LandingPageInfoEntry.TABLE_NAME}(\`${Contract.LandingPageInfoEntry.ID}\` int not null auto_increment primary key,\`${Contract.LandingPageInfoEntry.TITLE}\` varchar(255),\`${Contract.LandingPageInfoEntry.BODY}\` text);`;
 
 	var fuls = [];
-	return new Promise((fulfill, reject) => {
-		getConnection().then((con) => {
-			con.query(createUsersQuery, (err, success) => {
-				if (err) {
-					con.release();
-					reject(err + "\n" + createUsersQuery);
-				} else {
-					fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
-					con.query(createPatientsQuery, (err, success) => {
-						if (err) {
-							con.release();
-							reject(err + "\n" + createPatientsQuery);
-						} else {
-							fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
-							con.query(createArticlesQuery, (err, success) => {
-								if (err) {
-									con.release();
-									reject(err + "\n" + createArticlesQuery);
-								} else {
-									fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
-									con.query(createBackgroundImagesQuery, (err, success) => {
-										if (err) {
-											con.release();
-											reject(err + "\n" + createBackgroundImagesQuery);
-										} else {
-											fuls.push(`${Contract.BackgroundImagesEntry.TABLE_NAME} table created successfully.`);
-											con.query(createLandingPageInfoQuery, (err, success) => {
-												con.release();
-												if (err)
-													reject(err + "\n" + createLandingPageInfoQuery);
-												else {
-													fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
-													fulfill(fuls);
-												}
-											});
-										}
-									});
-								}
-							});
-						}
-					});
-				}
-			});
-		});
-	});
+	return new Promise((fulfill, reject) =>
+		connection
+		.query(createUsersQuery)
+		.then(success => {
+			fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
+			return connection.query(createPatientsQuery);
+		})
+		.catch(err => reject(err + "\n" + createUsersQuery))
+		.then(success => {
+			fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
+			return connection.query(createArticlesQuery);
+		})
+		.catch(err => reject(err + "\n" + createPatientsQuery))
+		.then(rows => {
+			fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
+			return connection.query(createBackgroundImagesQuery);
+		})
+		.catch(err => reject(err + "\n" + createArticlesQuery))
+		.then(rows => {
+			fuls.push(`${Contract.BackgroundImagesEntry.TABLE_NAME} table created successfully.`);
+			return connection.query(createLandingPageInfoQuery);
+		})
+		.catch(err => reject(err + "\n" + createBackgroundImagesQuery))
+		.then(rows => {
+			fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
+			fulfill(fuls);
+		})
+		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
+	);
 };
 
 module.exports = {
-	getConnection: getConnection,
+	connection: connection,
 	dropTables: dropTables,
 	createTables: createTables,
 	authenticateUser: UserDAO.authenticateUser,

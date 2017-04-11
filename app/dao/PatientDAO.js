@@ -2,7 +2,7 @@ const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
 
-var getConnection = require('../../utils/ConnectionHandler.js').getConnection;
+var connection = require('../../utils/ConnectionHandler.js').connection;
 
 var insertPatient = (patient, user) => {
 	return new Promise((fulfill, reject) => {
@@ -44,18 +44,9 @@ var insertPatient = (patient, user) => {
 
 			query += `);`;
 
-			getConnection()
-				.then(con => con
-					.query(
-						query,
-						(err, OkPacket) => {
-							con.release();
-							if (err)
-								reject(err);
-							else
-								fulfill(OkPacket.insertId);
-						})
-				)
+			connection
+				.query(query)
+				.then(OkPacket => fulfill(OkPacket.insertId))
 				.catch(err => reject(err));
 		}
 	});
@@ -82,71 +73,44 @@ var updatePatient = (patient, user) => {
 				query += `, \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
 			}
 			query += ` where \`${Contract.PatientsEntry.ID}\`=${patient.id};`;
-			getConnection()
-				.then(con => con
-					.query(
-						query,
-						(err, result) => {
-							con.release();
-							if (err)
-								reject(err);
-							else
-								fulfill(result);
-						})
-				)
+			connection
+				.query(query)
+				.then(result => fulfill(result))
 				.catch(err => reject(err));
 		}
 	});
 };
 
 var deletePatient = (id, user) => {
-	return new Promise((fulfill, reject) => {
-		getConnection()
-			.then(con => con
-				.query(
-					`delete from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} = '${id}'`,
-					(err, result) => {
-						con.release();
-						if (err)
-							reject(err);
-						else
-							fulfill(result);
-					})
-			)
-			.catch(err => reject(err));
-	});
+	return new Promise((fulfill, reject) =>
+		connection
+		.query(`delete from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} = '${id}'`)
+		.then(result => fulfill(result))
+		.catch(err => reject(err))
+	);
 };
 
 var getPatient = (id) => {
+	var query = `select * from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} ='${id}'`;
 	return new Promise((fulfill, reject) => {
-		var query = `select * from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} ='${id}'`;
-		getConnection()
-			.then(con => con
-				.query(query, (err, rows) => {
-					con.release();
-					if (err)
-						reject(err);
-					else
-						fulfill(Parsers.parsePatientsFromRowData(rows)[0]);
-				})
-			)
+		connection
+			.query(query)
+			.then(rows => {
+				if (rows.length === 0)
+					reject("Not found.");
+				else
+					fulfill(Parsers.parsePatientsFromRowData(rows)[0]);
+			})
 			.catch(err => reject(err));
 	});
 };
 
 var getPatients = () => {
+	var query = `select * from ${Contract.PatientsEntry.TABLE_NAME}`;
 	return new Promise((fulfill, reject) => {
-		var query = `select * from ${Contract.PatientsEntry.TABLE_NAME}`;
-		getConnection()
-			.then(con => con
-				.query(query, (err, rows) => {
-					con.release();
-					if (err)
-						reject(err);
-					else
-						fulfill(Parsers.parsePatientsFromRowData(rows));
-				})
-			)
+		connection
+			.query(query)
+			.then(rows => fulfill(Parsers.parsePatientsFromRowData(rows)))
 			.catch(err => reject(err));
 	});
 };
@@ -165,26 +129,17 @@ var searchPatients = (filterName, pageNumber, itemsPerPage) => {
 		var countQuery = `select count(*) as 'count' from ${Contract.PatientsEntry.TABLE_NAME} `;
 		if (filterName)
 			countQuery += `where instr( lower(${Contract.PatientsEntry.NAME}), lower('${filterName}')) `;
-		getConnection()
-			.then(con => con
-				.query(query, (err, rows) => {
-					if (err) {
-						con.release();
-						reject(err);
-					} else {
-						patients.data = (Parsers.parsePatientsFromRowData(rows));
-						con.query(countQuery, (err, rows) => {
-							con.release();
-							if (err)
-								reject(err);
-							else {
-								patients.count = rows[0].count;
-								fulfill(patients);
-							}
-						});
-					}
-				})
-			)
+		connection
+			.query(query)
+			.then(rows => {
+				patients.data = (Parsers.parsePatientsFromRowData(rows));
+				return connection.query(countQuery);
+			})
+			.catch(err => reject(err))
+			.then(rows => {
+				patients.count = rows[0].count;
+				fulfill(patients);
+			})
 			.catch(err => reject(err));
 	});
 };

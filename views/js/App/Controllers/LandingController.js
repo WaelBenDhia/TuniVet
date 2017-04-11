@@ -1,5 +1,24 @@
 angular.module('tunivetApp').
-controller('landingController', function ($scope) {
+controller('landingController', function ($scope, Session, AUTH_EVENTS) {
+    $scope.showImageForm = false;
+
+    $scope.closeImageForm = () => {
+        $scope.showImageForm = false;
+    };
+    $scope.displayImageForm = (index) => {
+        $scope.showImageForm = true;
+    };
+
+    $scope.isLoggedIn = Session.getUser() !== null;
+
+    $scope.$on(AUTH_EVENTS.loginSuccess, function () {
+        $scope.isLoggedIn = Session.getUser() !== null;
+    });
+
+    $scope.$on(AUTH_EVENTS.logoutSuccess, function () {
+        $scope.isLoggedIn = Session.getUser() !== null;
+    });
+
     $scope.info = [{
         title: 'Bienvenue',
         body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

@@ -6,7 +6,7 @@
 
 <body>
     <div class="header-spacer"></div>
-    <div class="patients-form" ng-if="showForm">
+    <div class="patients-form form" ng-if="showForm">
         <div ng-click="closeForm()" class="top"></div>
         <div ng-click="closeForm()" class="bottom"></div>
         <div ng-click="closeForm()" class="left"></div>
@@ -25,7 +25,10 @@
             <div>
                 <span>Date de sortie:</span>
                 <input ng-model="currentPatient.exitDate" min="{{currentPatient.entryDate | date:'yyyy-MM-dd'}}" type="date">
-                <span class="highlight">{{currentPatient.exitDate | date:'yyyy/MM/dd'}}</span>
+            </div>
+            <div>
+                <span>Tarif par jour:</span>
+                <input ng-model="currentPatient.tarif" min="{{currentPatient.tarif}}" type="number">
             </div>
             <button ng-click="send()" type="submit" class="elevation-lift">Sauvegarde</button>
         </div>

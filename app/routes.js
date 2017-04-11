@@ -137,7 +137,7 @@ module.exports = (server, passport) => {
 	server.get('/patient/:id', (req, res) => {
 		DB.getPatient(req.params.id)
 			.then(patient => res.send(patient))
-			.catch(err => res.send(err));
+			.catch(err => res.status(404).send(err));
 	});
 
 	server.get('/image/:id', (req, res) => {
