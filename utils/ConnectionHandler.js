@@ -1,3 +1,5 @@
+"use strict";
+
 const MySql = require('promise-mysql');
 
 var db_host = process.env.MYSQL_HOST || "localhost";

@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 controller('tunivetController', function ($scope, $location, $rootScope, patientsService, AuthService, Session, AUTH_EVENTS) {
     $scope.isLoggedIn = Session.getUser() !== null;

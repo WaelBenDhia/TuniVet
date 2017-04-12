@@ -1,3 +1,5 @@
+"use strict";
+
 const LocalStrategy = require('passport-local');
 const DB = require('../app/tunivetDB.js');
 

@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 filter('frenchDate', ($filter) => {
     return input => {

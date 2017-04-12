@@ -1,3 +1,5 @@
+"use strict";
+
 const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 const PasswordHelper = require('../../utils/password.js');
@@ -66,12 +68,20 @@ var updatePatient = (patient, user) => {
 			var date = new Date(patient.exitDate);
 			if (patient.condition)
 				query += ` \`${Contract.PatientsEntry.CONDITION}\`='${patient.condition}'`;
+			if (patient.name && patient.condition)
+				query += ',';
 			if (patient.name)
-				query += `, \`${Contract.PatientsEntry.NAME}\`='${patient.name}'`;
+				query += ` \`${Contract.PatientsEntry.NAME}\`='${patient.name}'`;
+			if (patient.exitDate && patient.name)
+				query += ',';
 			if (patient.exitDate && !isNaN(date.getTime())) {
 				var formatedMysqlString = (new Date((new Date((new Date(date)).toISOString())).getTime() - ((new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, 19).replace('T', ' ');
-				query += `, \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
+				query += ` \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
 			}
+			if (patient.exitDate && patient.tarif)
+				query += ',';
+			if (patient.name)
+				query += ` \`${Contract.PatientsEntry.TARIF}\`='${patient.tarif}'`;
 			query += ` where \`${Contract.PatientsEntry.ID}\`=${patient.id};`;
 			connection
 				.query(query)

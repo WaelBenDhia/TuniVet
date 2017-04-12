@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 controller('patientsController', function ($timeout, $scope, patientsService) {
     $scope.showForm = false;
@@ -24,8 +26,9 @@ controller('patientsController', function ($timeout, $scope, patientsService) {
             $scope.adding = false;
             $scope.currentPatient.name = patient.name;
             $scope.currentPatient.condition = patient.condition;
-            $scope.currentPatient.exitDate = patient.exitDate;
+            $scope.currentPatient.exitDate = new Date(patient.exitDate);
             $scope.currentPatient.id = patient.id;
+            $scope.currentPatient.tarif = patient.tarif;
         } else {
             $scope.adding = true;
             $scope.currentPatient.name = "";
@@ -64,7 +67,7 @@ controller('patientsController', function ($timeout, $scope, patientsService) {
         }
     };
 
-    loadPatients = () => {
+    var loadPatients = () => {
         patientsService
             .get($scope.search)
             .then(res => {

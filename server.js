@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express');
 const passport = require('passport');
 const server = express();
@@ -7,7 +9,7 @@ const bodyParser = require('body-parser');
 
 const DB = require('./app/tunivetDB.js');
 
-var port = process.env.PORT || 8081;
+var port = process.env.PORT || 8090;
 var ip = process.env.IP || '0.0.0.0';
 
 server.use(cookieParser());

@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 factory('patientsService', function ($http) {
     var patientsService = {};

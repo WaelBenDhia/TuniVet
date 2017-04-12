@@ -685,8 +685,8 @@ span.secondary-color {
 	float: left;
 	padding-left: 2.5%;
 	padding-right: 2.5%;
+	height: 25%;
 	width: 45%;
-	height: 37.5%;
 	font-size: 20px;
 }
 
@@ -696,7 +696,6 @@ span.secondary-color {
 	float: left;
 	font-family: var(--font-heading);
 	width: 95%;
-	height: 25%;
 	line-height: 10vh;
 	font-size: 220%;
 	font-weight: 300;

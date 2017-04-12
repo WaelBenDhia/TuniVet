@@ -1,6 +1,6 @@
-const path = require('path');
-const DB = require('../app/tunivetDB.js');
-const handelbars = require('express-handlebars');
+"use strict";
+
+const Handlers = require('./handlers');
 
 var isLoggedIn = (req, res, next) => {
 	if (req.isAuthenticated())
@@ -9,144 +9,43 @@ var isLoggedIn = (req, res, next) => {
 };
 
 module.exports = (server, passport) => {
-	server.get('/', (req, res) => res.sendFile(path.join(__dirname, '../views/index.html')));
+	server.get('/', Handlers.rootHandler);
 
-	server.get('/login', (req, res) => res.sendFile(path.join(__dirname, '../views/Login.html')));
+	server.get('/logout', Handlers.logoutHandler);
 
-	server.get('/article/insert', isLoggedIn, (req, res) => res.sendFile(path.join(__dirname, '../views/articleinsert.html')));
+	server.get('/css/:file', Handlers.cssFilesHandler);
 
-	server.get('/patient/insert', isLoggedIn, (req, res) => res.sendFile(path.join(__dirname, '../views/patientinsert.html')));
+	server.get('/css/fonts/:file', Handlers.fontFilesHandler);
 
-	server.get('/logout', (req, res) => {
-		req.logout();
-		res.redirect('/');
-	});
+	server.get('/js/:file', Handlers.javascriptFilesHandler);
 
-	server.get('/css/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/css/${req.params.file}`)));
+	server.get('/js/App/:file', Handlers.angularFilesHandler);
 
-	server.get('/css/fonts/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/css/fonts/${req.params.file}`)));
+	server.get('/js/App/Controllers/:file', Handlers.controllersFileHandler);
 
-	server.get('/js/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/${req.params.file}`)));
+	server.get('/templates/:file', Handlers.templatesFileHandler);
 
-	server.get('/js/App/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/${req.params.file}`)));
+	server.post('/createUser', isLoggedIn, Handlers.createUserHandler);
 
-	server.get('/js/App/Controllers/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/Controllers/${req.params.file}`)));
+	server.post('/article/insert', isLoggedIn, Handlers.createArticleHandler);
 
-	server.get('/templates/:file', (req, res) => res.sendFile(path.join(__dirname, `../views/${req.params.file}`)));
+	server.post('/login', Handlers.loginHandler(passport));
 
-	server.get('/signup', (req, res) => res.sendFile(path.join(__dirname, '../views/SignUp.html')));
+	server.get('/profile', isLoggedIn, Handlers.getLoggedInUserHandler);
 
-	server.post('/signup', (req, res) => {
-		DB.insertUserIfNotExists({
-				username: req.body.username,
-				email: req.body.email,
-				firstName: req.body.firstName,
-				lastName: req.body.lastName,
-				password: req.body.password
-			})
-			.then(user => {
-				res.redirect('/');
-			})
-			.catch(err => res.send(err));
-	});
+	server.get('/article/:id', Handlers.getArticleHandler);
 
-	server.get('/userstatus', (req, res) => {
-		if (!req.isAuthenticated())
-			res.status(200).json({
-				status: false
-			});
-		else
-			res.status(200).json({
-				status: true
-			});
-	});
+	server.get('/patient', isLoggedIn, Handlers.searchPatientsHandler);
 
-	server.post('/article/insert', isLoggedIn, (req, res) => {
-		DB.insertArticle({
-				name: req.body.name,
-				content: req.body.content
-			}, req.user)
-			.then(insertId => res.redirect('/article/' + insertId))
-			.catch(err => res.send(err));
-	});
+	server.post('/patient', isLoggedIn, Handlers.createPatientHandler);
 
-	server.post('/patient', isLoggedIn, (req, res) => {
-		DB.insertPatient(req.body, req.user)
-			.then(insertId => res.status(200).send({
-				id: insertId
-			}))
-			.catch(err => res.status(400).send(err));
-	});
+	server.put('/patient/:id', isLoggedIn, Handlers.updatePatientHandler);
 
-	server.put('/patient/:id', isLoggedIn, (req, res) => {
-		DB.updatePatient({
-				name: req.body.name,
-				condition: req.body.condition,
-				exitDate: req.body.exitDate,
-				id: req.params.id
-			}, req.user)
-			.then(insertId => res.status(200).send("UPDATE SUCCESS"))
-			.catch(err => res.status(400).send(err));
-	});
+	server.delete('/patient/:id', isLoggedIn, Handlers.deletePatientHandler);
 
-	server.delete('/patient/:id', isLoggedIn, (req, res) => {
-		DB.deletePatient(req.params.id, req.user)
-			.then(insertId => res.status(200).send("DELETE SUCCESS"))
-			.catch(err => res.status(400).send(err));
-	});
+	server.get('/patient/:id', Handlers.getSinglePatientHandler);
 
-	server.post('/login', (req, res, next) => {
-		passport.authenticate('local', (err, user, info) => {
-			if (err)
-				return next(err);
-			if (!user)
-				return res.status(401).json({
-					err: info
-				});
-			req.logIn(user, err => {
-				if (err)
-					return res.status(500).json({
-						err: 'Login echoue.'
-					});
-				delete user.password;
-				delete user.salt;
-				res.status(200).json(user);
-			});
-		})(req, res, next);
-	});
+	server.get('/image/:id', Handlers.imageHandler);
 
-	server.get('/profile', isLoggedIn, (req, res) => {
-		var user = req.user;
-		delete user.password;
-		delete user.salt;
-		res.send(user);
-	});
-
-	server.get('/patients', isLoggedIn, (req, res) => {
-		DB.searchPatients(req.query.name, req.query.page || 0, req.query.items || 10)
-			.then(patients => res.send(patients))
-			.catch(err => res.send(err));
-	});
-
-	server.get('/article/:id', (req, res) => {
-		DB.getArticle(req.params.id)
-			.then(patient => res.send(patient))
-			.catch(err => res.send(err));
-	});
-
-	server.get('/patient/:id', (req, res) => {
-		DB.getPatient(req.params.id)
-			.then(patient => res.send(patient))
-			.catch(err => res.status(404).send(err));
-	});
-
-	server.get('/image/:id', (req, res) => {
-		DB.getImage(req.params.id)
-			.then(image => res.send(image.imageData))
-			.catch(err => res.send(err));
-	});
-
-	server.get('*', (req, res) => {
-		res.status(404).send("Vous avez l'air perdu");
-	});
+	server.get('*', Handlers.lostHandler);
 };

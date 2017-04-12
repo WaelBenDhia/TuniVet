@@ -1,3 +1,5 @@
+"use strict";
+
 const Contract = require('../../utils/TunivetContract.js');
 const Parsers = require('../../utils/Parsers.js');
 

@@ -1,3 +1,5 @@
+"use strict";
+
 const Contract = require('../utils/TunivetContract.js');
 const ConnectionHandler = require('../utils/ConnectionHandler.js');
 
@@ -19,9 +21,9 @@ var dropTables = () => {
 
 var createTables = () => {
 
-	var createUsersQuery = `create table if not exists ${Contract.UsersEntry.TABLE_NAME}(\`${Contract.UsersEntry.USERNAME}\` varchar(255) not null primary key,\`${Contract.UsersEntry.FIRST_NAME}\` varchar(255),\`${Contract.UsersEntry.LAST_NAME}\` varchar(255),\`${Contract.UsersEntry.EMAIL}\`varchar(255) not null unique,\`${Contract.UsersEntry.PASSWORD}\` varchar(255) not null,\`${Contract.UsersEntry.SALT}\` varchar(255) not null);`;
+	var createUsersQuery = `create table if not exists ${Contract.UsersEntry.TABLE_NAME}(\`${Contract.UsersEntry.USERNAME}\` varchar(255) not null primary key,\`${Contract.UsersEntry.FIRST_NAME}\` varchar(255),\`${Contract.UsersEntry.LAST_NAME}\` varchar(255),\`${Contract.UsersEntry.EMAIL}\` varchar(255) not null unique,\`${Contract.UsersEntry.PASSWORD}\` varchar(255) not null,\`${Contract.UsersEntry.SALT}\` varchar(255) not null);`;
 
-	var createPatientsQuery = `create table if not exists ${Contract.PatientsEntry.TABLE_NAME}(\`${Contract.PatientsEntry.ID}\` int not null auto_increment primary key,\`${Contract.PatientsEntry.NAME}\` varchar(255) not null,\`${Contract.PatientsEntry.ENTRY_DATE}\` timestamp default current_timestamp not null,\`${Contract.PatientsEntry.EXIT_DATE}\` timestamp null,\`${Contract.PatientsEntry.UPDATE_DATE}\` timestamp default current_timestamp on update current_timestamp,\`${Contract.PatientsEntry.CONDITION}\` varchar(255) not null);`;
+	var createPatientsQuery = `create table if not exists ${Contract.PatientsEntry.TABLE_NAME}(\`${Contract.PatientsEntry.ID}\` int not null auto_increment primary key,\`${Contract.PatientsEntry.NAME}\` varchar(255) not null,\`${Contract.PatientsEntry.ENTRY_DATE}\` timestamp default current_timestamp not null,\`${Contract.PatientsEntry.EXIT_DATE}\` timestamp null,\`${Contract.PatientsEntry.UPDATE_DATE}\` timestamp default current_timestamp on update current_timestamp,\`${Contract.PatientsEntry.CONDITION}\` varchar(255) not null, \`${Contract.PatientsEntry.TARIF}\` FLOAT);`;
 
 	var createArticlesQuery = `create table if not exists ${Contract.ArticlesEntry.TABLE_NAME}(\`${Contract.ArticlesEntry.ID}\` int not null auto_increment primary key,\`${Contract.ArticlesEntry.NAME}\` varchar(255) not null,\`${Contract.ArticlesEntry.AUTHOR}\` varchar(255) not null,\`${Contract.ArticlesEntry.WRITE_DATE}\` timestamp default current_timestamp,\`${Contract.ArticlesEntry.LAST_UPDATE_DATE}\` timestamp default current_timestamp on update current_timestamp,\`${Contract.ArticlesEntry.CONTENT}\` text,foreign key (author) references users(username));`;
 
@@ -33,31 +35,31 @@ var createTables = () => {
 	return new Promise((fulfill, reject) =>
 		connection
 		.query(createUsersQuery)
+		.catch(err => reject(err + "\n" + createUsersQuery))
 		.then(success => {
 			fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createPatientsQuery);
 		})
-		.catch(err => reject(err + "\n" + createUsersQuery))
+		.catch(err => reject(err + "\n" + createPatientsQuery))
 		.then(success => {
 			fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createArticlesQuery);
 		})
-		.catch(err => reject(err + "\n" + createPatientsQuery))
+		.catch(err => reject(err + "\n" + createArticlesQuery))
 		.then(rows => {
 			fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createBackgroundImagesQuery);
 		})
-		.catch(err => reject(err + "\n" + createArticlesQuery))
+		.catch(err => reject(err + "\n" + createBackgroundImagesQuery))
 		.then(rows => {
 			fuls.push(`${Contract.BackgroundImagesEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createLandingPageInfoQuery);
 		})
-		.catch(err => reject(err + "\n" + createBackgroundImagesQuery))
+		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
 		.then(rows => {
 			fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
 			fulfill(fuls);
 		})
-		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
 	);
 };
 

@@ -1,40 +1,48 @@
-function PatientsEntry(){}
-PatientsEntry.TABLE_NAME         = "patients";
-PatientsEntry.ID                 = "id";
-PatientsEntry.NAME               = "name";
-PatientsEntry.ENTRY_DATE         = "entry_date";
-PatientsEntry.EXIT_DATE          = "exit_date";
-PatientsEntry.UPDATE_DATE        = "update_date";
-PatientsEntry.CONDITION          = "condition";
+"use strict";
 
-function ArticlesEntry(){}
-ArticlesEntry.TABLE_NAME         = "articles";
-ArticlesEntry.ID                 = "id";
-ArticlesEntry.NAME               = "name";
-ArticlesEntry.AUTHOR             = "author";
-ArticlesEntry.WRITE_DATE         = "write_date";
-ArticlesEntry.LAST_UPDATE_DATE   = "last_update_date";
-ArticlesEntry.CONTENT            = "content";
+const PatientsEntry = {
+	TABLE_NAME: "patients",
+	ID: "id",
+	NAME: "name",
+	ENTRY_DATE: "entry_date",
+	EXIT_DATE: "exit_date",
+	UPDATE_DATE: "update_date",
+	CONDITION: "condition",
+	TARIF: "tarif"
+};
 
-function BackgroundImagesEntry(){}
-BackgroundImagesEntry.TABLE_NAME = "backgrounds_images";
-BackgroundImagesEntry.ID         = "id";
-BackgroundImagesEntry.IMAGE_DATA = "image_data";
+const ArticlesEntry = {
+	TABLE_NAME: "articles",
+	ID: "id",
+	NAME: "name",
+	AUTHOR: "author",
+	WRITE_DATE: "write_date",
+	LAST_UPDATE_DATE: "last_update_date",
+	CONTENT: "content"
+};
 
-function UsersEntry(){}
-UsersEntry.TABLE_NAME            = "users";
-UsersEntry.USERNAME              = "username";
-UsersEntry.EMAIL                 = "email";
-UsersEntry.FIRST_NAME            = "first_name";
-UsersEntry.LAST_NAME             = "last_name";
-UsersEntry.PASSWORD              = "password";
-UsersEntry.SALT                  = "salt";
+const BackgroundImagesEntry = {
+	TABLE_NAME: "backgrounds_images",
+	ID: "id",
+	IMAGE_DATA: "image_data"
+};
 
-function LandingPageInfoEntry(){}
-LandingPageInfoEntry.TABLE_NAME  = "landing_page_info";
-LandingPageInfoEntry.ID          = "id";
-LandingPageInfoEntry.TITLE       = "title";
-LandingPageInfoEntry.BODY        = "body";
+const UsersEntry = {
+	TABLE_NAME: "users",
+	USERNAME: "username",
+	EMAIL: "email",
+	FIRST_NAME: "first_name",
+	LAST_NAME: "last_name",
+	PASSWORD: "password",
+	SALT: "salt"
+};
+
+const LandingPageInfoEntry = {
+	TABLE_NAME: "landing_page_info",
+	ID: "id",
+	TITLE: "title",
+	BODY: "body"
+};
 
 module.exports = {
 	PatientsEntry: PatientsEntry,

@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 controller('loginController', function ($scope, $location, $timeout, AuthService) {
     $scope.dataLoading = false;

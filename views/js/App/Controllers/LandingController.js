@@ -1,3 +1,5 @@
+"use strict";
+
 angular.module('tunivetApp').
 controller('landingController', function ($scope, Session, AUTH_EVENTS) {
     $scope.showImageForm = false;
