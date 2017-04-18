@@ -165,17 +165,17 @@ input[type="number"] {
 	--font-heading: "Geomanist", sans-serif;
 	--font-body: "Bariol", sans-serif;
 	--primary-color: #055B80;
-	--primary-color-transparent: rgba(5, 91, 128, 0.75);
 	--secondary-color: #FFB700;
 	--tertiary-color: #065220;
-	--tertiary-color-transparent: rgba(6, 82, 32, 0.75);
 	--quaternary-color: #430132;
 	--quinary-color: #7D2809;
 	--senary-color: #363537;
-	--senary-color-transparent: rgba(54, 53, 55, 0.75);
 	--septenary-color: #78172C;
 	--white: #E8EBF7;
 	--black: #00171F;
+	--primary-color-transparent: rgba(5, 91, 128, 0.75);
+	--tertiary-color-transparent: rgba(6, 82, 32, 0.75);
+	--senary-color-transparent: rgba(54, 53, 55, 0.75);
 	--transition-time-very-slow: 0.6s;
 	--transition-time-slow: 0.3s;
 	--transition-time-fast: 0.15s;
@@ -491,6 +491,10 @@ span.secondary-color {
 	margin: 0;
 }
 
+.landing-section>.info {
+	bottom: 124px;
+}
+
 .landing-section-1 {
 	background-image: url('../image/1');
 }
@@ -525,6 +529,18 @@ span.secondary-color {
 
 .landing-section-3>.content {
 	color: var(--quaternary-color);
+}
+
+.landing-section-4 {
+	background-image: url('../image/4');
+}
+
+.landing-section-4>.title {
+	background-color: var(--quinary-color);
+}
+
+.landing-section-4>.content {
+	color: var(--quinary-color);
 }
 
 .login-page {
@@ -762,42 +778,13 @@ span.secondary-color {
 	transform: translateY(40px);
 }
 
-.form>.bottom,
-.form>.top,
-.form>.left,
-.form>.right {
+.form>.bg {
 	position: absolute;
 	background: transparent;
-}
-
-.form>.bottom,
-.form>.top {
 	width: 100%;
-	height: 35%;
-	left: 0;
-}
-
-.form>.left,
-.form>.right {
-	top: 35%;
-	width: 30%;
-	height: 30%;
-}
-
-.form>.top {
+	height: 100%;
 	top: 0;
-}
-
-.form>.bottom {
-	top: 65%;
-}
-
-.form>.left {
 	left: 0;
-}
-
-.form>.right {
-	left: 70%;
 }
 
 .form>div {

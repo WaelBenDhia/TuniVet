@@ -45,7 +45,13 @@ module.exports = (server, passport) => {
 
 	server.get('/patient/:id', Handlers.getSinglePatientHandler);
 
-	server.get('/image/:id', Handlers.imageHandler);
+	server.get('/image/:id', Handlers.imageGetHandler);
+
+	server.put('/image/:id', isLoggedIn, Handlers.imageUpdateHandler);
+
+	server.get('/info', Handlers.getInfoHandler);
+
+	server.put('/info/:id', isLoggedIn, Handlers.updateInfoHandler);
 
 	server.get('*', Handlers.lostHandler);
 };

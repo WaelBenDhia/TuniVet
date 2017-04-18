@@ -4,14 +4,14 @@ const Contract = require('../utils/TunivetContract.js');
 const ConnectionHandler = require('../utils/ConnectionHandler.js');
 
 const PatientDAO = require('./dao/PatientDAO');
+const InfoDAO = require('./dao/LandingPageInfoDAO');
 const UserDAO = require('./dao/UserDAO');
 const ArticleDAO = require('./dao/ArticleDAO');
-const BackgroundImageDAO = require('./dao/BackgroundImageDAO');
 
 var connection = ConnectionHandler.connection;
 
 var dropTables = () => {
-	var dropQuery = `drop table if exists ${Contract.BackgroundImagesEntry.TABLE_NAME}, ${Contract.ArticlesEntry.TABLE_NAME}, ${Contract.PatientsEntry.TABLE_NAME}, ${Contract.UsersEntry.TABLE_NAME};`;
+	var dropQuery = `drop table if exists ${Contract.ArticlesEntry.TABLE_NAME}, ${Contract.PatientsEntry.TABLE_NAME}, ${Contract.UsersEntry.TABLE_NAME};`;
 	return new Promise((fulfill, reject) =>
 		connection.query(dropQuery)
 		.then(rows => fulfill(rows))
@@ -27,39 +27,32 @@ var createTables = () => {
 
 	var createArticlesQuery = `create table if not exists ${Contract.ArticlesEntry.TABLE_NAME}(\`${Contract.ArticlesEntry.ID}\` int not null auto_increment primary key,\`${Contract.ArticlesEntry.NAME}\` varchar(255) not null,\`${Contract.ArticlesEntry.AUTHOR}\` varchar(255) not null,\`${Contract.ArticlesEntry.WRITE_DATE}\` timestamp default current_timestamp,\`${Contract.ArticlesEntry.LAST_UPDATE_DATE}\` timestamp default current_timestamp on update current_timestamp,\`${Contract.ArticlesEntry.CONTENT}\` text,foreign key (author) references users(username));`;
 
-	var createBackgroundImagesQuery = `create table if not exists ${Contract.BackgroundImagesEntry.TABLE_NAME}(\`${Contract.BackgroundImagesEntry.ID}\` int not null auto_increment primary key,\`${Contract.BackgroundImagesEntry.IMAGE_DATA}\` mediumblob);`;
-
 	var createLandingPageInfoQuery = `create table if not exists ${Contract.LandingPageInfoEntry.TABLE_NAME}(\`${Contract.LandingPageInfoEntry.ID}\` int not null auto_increment primary key,\`${Contract.LandingPageInfoEntry.TITLE}\` varchar(255),\`${Contract.LandingPageInfoEntry.BODY}\` text);`;
 
 	var fuls = [];
 	return new Promise((fulfill, reject) =>
 		connection
 		.query(createUsersQuery)
-		.catch(err => reject(err + "\n" + createUsersQuery))
 		.then(success => {
 			fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createPatientsQuery);
 		})
-		.catch(err => reject(err + "\n" + createPatientsQuery))
+		.catch(err => reject(err + "\n" + createUsersQuery))
 		.then(success => {
 			fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createArticlesQuery);
 		})
-		.catch(err => reject(err + "\n" + createArticlesQuery))
+		.catch(err => reject(err + "\n" + createPatientsQuery))
 		.then(rows => {
 			fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
-			return connection.query(createBackgroundImagesQuery);
-		})
-		.catch(err => reject(err + "\n" + createBackgroundImagesQuery))
-		.then(rows => {
-			fuls.push(`${Contract.BackgroundImagesEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createLandingPageInfoQuery);
 		})
-		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
+		.catch(err => reject(err + "\n" + createArticlesQuery))
 		.then(rows => {
 			fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
 			fulfill(fuls);
 		})
+		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
 	);
 };
 
@@ -77,7 +70,8 @@ module.exports = {
 	getPatient: PatientDAO.getPatient,
 	insertArticle: ArticleDAO.insertArticle,
 	getArticle: ArticleDAO.getArticle,
-	getImage: BackgroundImageDAO.getBackgroundImage,
 	getPatients: PatientDAO.getPatients,
-	searchPatients: PatientDAO.searchPatients
+	searchPatients: PatientDAO.searchPatients,
+	getInfo: InfoDAO.getAllLandingPageInfo,
+	updateInfo: InfoDAO.updateLandingPageInfo
 };

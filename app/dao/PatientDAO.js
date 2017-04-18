@@ -30,6 +30,10 @@ var insertPatient = (patient, user) => {
 				query += ", ";
 			if (patient.exitDate && !isNaN(date.getTime()))
 				query += `\`${Contract.PatientsEntry.EXIT_DATE}\``;
+			if (patient.exitDate && patient.tarif)
+				query += ',';
+			if (patient.name)
+				query += ` \`${Contract.PatientsEntry.TARIF}\``;
 
 			query += `) values (`;
 
@@ -43,6 +47,10 @@ var insertPatient = (patient, user) => {
 				query += ", ";
 			if (patient.exitDate && !isNaN(date.getTime()))
 				query += `'${formatedMysqlString}'`;
+			if (patient.exitDate && patient.tarif)
+				query += ',';
+			if (patient.name)
+				query += `'${patient.tarif}'`;
 
 			query += `);`;
 

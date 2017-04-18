@@ -21,12 +21,6 @@ const ArticlesEntry = {
 	CONTENT: "content"
 };
 
-const BackgroundImagesEntry = {
-	TABLE_NAME: "backgrounds_images",
-	ID: "id",
-	IMAGE_DATA: "image_data"
-};
-
 const UsersEntry = {
 	TABLE_NAME: "users",
 	USERNAME: "username",
@@ -47,7 +41,6 @@ const LandingPageInfoEntry = {
 module.exports = {
 	PatientsEntry: PatientsEntry,
 	ArticlesEntry: ArticlesEntry,
-	BackgroundImagesEntry: BackgroundImagesEntry,
 	UsersEntry: UsersEntry,
 	LandingPageInfoEntry: LandingPageInfoEntry
 };

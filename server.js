@@ -6,6 +6,7 @@ const server = express();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const busboy = require('connect-busboy');
 
 const DB = require('./app/tunivetDB.js');
 
@@ -22,6 +23,7 @@ server.use(session({
     resave: true,
     saveUninitialized: true
 }));
+server.use(busboy());
 server.use(passport.initialize());
 server.use(passport.session());
 

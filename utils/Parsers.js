@@ -1,9 +1,9 @@
 "use strict";
 
 const Contract = require('../utils/TunivetContract.js');
-
+const moment = require('moment');
 var formatDate = date => {
-	return require('moment')(date).format('YYYY-MM-DD HH:mm:ss');
+	return moment(date).format('YYYY-MM-DD HH:mm:ss');
 };
 
 var parseArticlesFromRowData = rows => {
@@ -22,7 +22,12 @@ var parseArticlesFromRowData = rows => {
 
 var parsePatientsFromRowData = rows => {
 	var patients = [];
-	for (var i = 0; i < rows.length; i++)
+	for (var i = 0; i < rows.length; i++) {
+		var price = new Date(rows[i][Contract.PatientsEntry.EXIT_DATE]) || new Date();
+		price -= new Date(rows[i][Contract.PatientsEntry.ENTRY_DATE]);
+		price /= 86400000;
+		price = Math.ceil(price);
+		price *= rows[i][Contract.PatientsEntry.TARIF];
 		patients.push({
 			id: rows[i][Contract.PatientsEntry.ID],
 			name: rows[i][Contract.PatientsEntry.NAME],
@@ -31,8 +36,9 @@ var parsePatientsFromRowData = rows => {
 			updateDate: formatDate(rows[i][Contract.PatientsEntry.UPDATE_DATE]),
 			condition: rows[i][Contract.PatientsEntry.CONDITION],
 			tarif: rows[i][Contract.PatientsEntry.TARIF],
-			price: Math.ceil(Math.abs(new Date() - (new Date(rows[i][Contract.PatientsEntry.EXIT_DATE]) || new Date(rows[i][Contract.ArticlesEntry.ENTRY_DATE]))) / 86400000) * rows[i][Contract.PatientsEntry.TARIF]
+			price: price
 		});
+	}
 	return patients;
 };
 

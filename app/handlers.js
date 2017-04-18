@@ -1,9 +1,11 @@
 "use strict";
 
 const path = require('path');
+const fs = require('fs');
+const busboy = require('connect-busboy');
 const DB = require('../app/tunivetDB');
 
-var rootHandler = (req, res) => res.sendFile(path.join(__dirname, '../views/index.html'));
+var rootHandler = (req, res) => res.sendFile(path.join(__dirname, '../views/templates/index.html'));
 
 var logoutHandler = (req, res) => {
     req.logout();
@@ -20,7 +22,7 @@ var angularFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../vi
 
 var controllersFileHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/Controllers/${req.params.file}`));
 
-var templatesFileHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/${req.params.file}`));
+var templatesFileHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/templates/${req.params.file}`));
 
 var createUserHandler = (req, res) =>
     DB.insertUserIfNotExists({
@@ -38,7 +40,7 @@ var getLoggedInUserHandler = (req, res) => {
     delete user.password;
     delete user.salt;
     res.send(user);
-}
+};
 
 var createArticleHandler = (req, res) =>
     DB.insertArticle({
@@ -88,10 +90,7 @@ var createPatientHandler = (req, res) =>
 var searchPatientsHandler = (req, res) =>
     DB.searchPatients(req.query.name, req.query.page || 0, req.query.items || 10)
     .then(patients => res.send(patients))
-    .catch(err => {
-        console.log(err);
-        res.status(500).send(err);
-    });
+    .catch(err => res.status(500).send(err));
 
 var updatePatientHandler = (req, res) =>
     DB.updatePatient({
@@ -115,10 +114,47 @@ var getSinglePatientHandler = (req, res) =>
     .catch(err => res.status(404).send(err));
 
 
-var imageHandler = (req, res) =>
-    DB.getImage(req.params.id)
-    .then(image => res.send(image.imageData))
-    .catch(err => res.send(err));
+var imageGetHandler = (req, res) => res.sendFile(path.join(__dirname, '/../upload/', req.params.id));
+
+var imageUpdateHandler = (req, res) => {
+    var fstream = null;
+    var complete = false;
+    req.pipe(req.busboy);
+    req.busboy
+        .on('file', (fieldname, file, filename) => {
+            var filePath = path.join(__dirname, '/../upload/', req.params.id);
+            fstream = fs.createWriteStream(filePath);
+            console.log(filePath);
+            file.pipe(fstream);
+            var error = null;
+            fstream.on('error', err => error = err);
+            fstream.on('close', () => {
+                complete = true;
+                if (error)
+                    res.status(500).send(error);
+                else
+                    res.status(200).send('upload success');
+            });
+        })
+        .on('finish', () => {
+            /*if (!complete)
+                res.status(400).send("No file found");*/
+        });
+};
+
+var getInfoHandler = (req, res) =>
+    DB.getInfo()
+    .then(info => res.send(info))
+    .catch(err => res.status(500).send(err));
+
+var updateInfoHandler = (req, res) =>
+    DB.updateInfo({
+        id: req.body.id,
+        title: req.body.title,
+        body: req.body.body
+    }, req.user)
+    .then(okPacket => res.status(200).send("UPDATE SUCCESS"))
+    .catch(err => res.status(400).send(err));
 
 var lostHandler = (req, res) => res.status(404).send("Vous avez l'air perdu");
 
@@ -146,7 +182,11 @@ module.exports = {
 
     loginHandler: loginHandler,
 
-    imageHandler: imageHandler,
+    imageGetHandler: imageGetHandler,
+    imageUpdateHandler: imageUpdateHandler,
+
+    getInfoHandler: getInfoHandler,
+    updateInfoHandler: updateInfoHandler,
 
     lostHandler: lostHandler
 };

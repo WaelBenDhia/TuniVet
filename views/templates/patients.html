@@ -7,10 +7,7 @@
 <body>
     <div class="header-spacer"></div>
     <div class="patients-form form" ng-if="showForm">
-        <div ng-click="closeForm()" class="top"></div>
-        <div ng-click="closeForm()" class="bottom"></div>
-        <div ng-click="closeForm()" class="left"></div>
-        <div ng-click="closeForm()" class="right"></div>
+        <div ng-click="closeForm()" class="bg"></div>
         <div class="elevation-5 card">
             <div>
                 <span>Nom:</span>
@@ -40,6 +37,7 @@
         <button class="elevation-lift" ng-click="setCurrent()" ng-disabled="dataLoading">Ajouter</button>
     </div>
     <div class="patients-container">
+        <tvt-patient></tvt-patient>
         <div class="patient elevation-3 card stagger" ng-repeat="patient in patients track by patient.id">
             <div>
                 {{patient.id}}. {{patient.name}}

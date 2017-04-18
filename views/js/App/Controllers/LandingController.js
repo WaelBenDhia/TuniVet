@@ -1,14 +1,41 @@
 "use strict";
 
 angular.module('tunivetApp').
-controller('landingController', function ($scope, Session, AUTH_EVENTS) {
+controller('landingController', function ($scope, Session, BackgroundImageService, LandingInfoService, AUTH_EVENTS) {
     $scope.showImageForm = false;
+    $scope.showInfoForm = false;
+    $scope.image = {
+        id: -1,
+        imageData: null
+    };
+    $scope.currentInfo = {
+        id: -1,
+        title: null,
+        body: null
+    };
 
     $scope.closeImageForm = () => {
         $scope.showImageForm = false;
+        $scope.image.id = -1;
     };
-    $scope.displayImageForm = (index) => {
+
+    $scope.displayImageForm = index => {
         $scope.showImageForm = true;
+        $scope.image.id = index;
+    };
+
+    $scope.closeInfoForm = () => {
+        $scope.showInfoForm = false;
+        $scope.currentInfo.id = -1;
+        $scope.currentInfo.title = null;
+        $scope.currentInfo.body = null;
+    };
+
+    $scope.displayInfoForm = index => {
+        $scope.showInfoForm = true;
+        $scope.currentInfo.id = $scope.info[index].id;
+        $scope.currentInfo.title = $scope.info[index].title;
+        $scope.currentInfo.body = $scope.info[index].body;
     };
 
     $scope.isLoggedIn = Session.getUser() !== null;
@@ -21,17 +48,25 @@ controller('landingController', function ($scope, Session, AUTH_EVENTS) {
         $scope.isLoggedIn = Session.getUser() !== null;
     });
 
-    $scope.info = [{
-        title: 'Bienvenue',
-        body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }, {
-        title: 'Horaires',
-        body: "Ut enim ad minim veniam, quis nostrud exercitation<table><tr><td>Lundi - Mardi</td><td>9h a 18h</td></tr><tr><td>Samedi</td><td>9h a 14h</td></tr></table>ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    }, {
-        title: 'Tarifs',
-        body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    }, {
-        title: 'Autre',
-        body: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    }];
+    $scope.sendImage = () =>
+        BackgroundImageService
+        .update($scope.image)
+        .then(sucess => window.location.reload(true))
+        .catch(err => console.log(err));
+
+    $scope.sendInfo = () => {
+        console.log("Sending: ");
+        console.log($scope.currentInfo);
+        LandingInfoService.update($scope.currentInfo)
+            .then(suc => {
+                reloadInfo();
+                console.log(suc);
+                $scope.closeInfoForm();
+            })
+            .catch(err => console.log(err));
+    };
+
+    var reloadInfo = () => LandingInfoService.get()
+        .then(info => $scope.info = info);
+    reloadInfo();
 });

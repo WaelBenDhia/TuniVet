@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies']);
+var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies', 'ngFileUpload']);
 
 var bands = [];
 
