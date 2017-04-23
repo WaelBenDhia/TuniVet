@@ -129,7 +129,7 @@ input::-webkit-inner-spin-button {
 .ng-enter {
 	transition: opacity var(--transition-time-fast) ease-out, transform var(--transition-time-slow) ease-out;
 	opacity: 0;
-	transform: translateY(40px);
+	transform: translateY(20px);
 }
 
 .ng-enter.ng-enter-active {
@@ -145,11 +145,25 @@ input::-webkit-inner-spin-button {
 
 .ng-leave.ng-leave-active {
 	opacity: 0;
-	transform: translateY(40px);
+	transform: translateY(20px);
 }
 
+.view-holder-loader {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: white;
+}
 .view-holder.ng-enter {
+	position: absolute;
 	z-index: 4;
+	width: 100%;
+}
+
+.view-holder.ng-enter.ng-enter-active,
+.view-holder.ng-leave.ng-leave-active {
+	position: absolute;
+	width: 100%;
 }
 
 .view-holder.ng-leave {
@@ -270,12 +284,37 @@ body {
 	position: relative;
 	background-color: var(--white);
 	overflow-x: hidden;
+	min-height: 100vh;
 }
 
 .view-holder {
 	position: relative;
+	width: 100%;
 	padding-top: var(--header-height);
 	min-height: calc(100vh - var(--header-height));
+	overflow: auto;
+}
+
+footer {
+	position: relative;
+	z-index: 1;
+	height: var(--header-height);
+	width: 100%;
+	line-height: var(--header-height);
+	font-size: 26px;
+	text-align: center;
+	font-weight: 200;
+}
+
+footer a {
+	color: var(--black);
+	font-weight: 300;
+	transition: color var(--transition-time-fast) ease;
+}
+
+footer a:hover {
+	transition: color var(--transition-time-fast) ease;
+	color: var(--secondary-color);
 }
 
 header {
@@ -359,7 +398,7 @@ header>.button {
 	border: 0;
 	color: var(--senary-color);
 	border-bottom: 2px solid var(--black);
-	font-family: var(--font-heading);
+	font-family: var(--font-body);
 	font-weight: 300;
 	background-color: transparent;
 	width: 150px;
@@ -404,7 +443,7 @@ input[type="submit"]:hover {
 	font-size: 20px;
 	overflow: hidden;
 	color: transparent;
-	font-family: var(--font-heading);
+	font-family: var(--font-bpdy);
 	font-weight: 300;
 	background-color: var(--secondary-color);
 	transform: translateX(100%);
@@ -590,7 +629,8 @@ span.secondary-color {
 .patients-search button,
 .patients-form button,
 .patient button,
-.login-page button {
+.login-page button,
+.image-form button {
 	border: 0;
 	width: 150px;
 	border-radius: 4px;
@@ -602,6 +642,13 @@ span.secondary-color {
 	font-size: 30px;
 	transition: color, box-shadow ease-out var(--transition-time-fast);
 	transform: translateX(-50%);
+}
+
+.image-form button {
+	position: absolute;
+	left: 50%;
+	bottom: 15px;
+	margin: 0;
 }
 
 .login-page button:hover {
@@ -668,6 +715,26 @@ span.secondary-color {
 	margin: 10px;
 	background: white;
 	padding-top: 5px;
+}
+
+.patient.ng-enter {
+	transition: opacity var(--transition-time-fast) var(--transition-time-slow) ease-in, transform var(--transition-time-slow) var(--transition-time-slow) ease-in, width var(--transition-time-slow) ease-out, margin var(--transition-time-slow) ease-out;
+	width: 0;
+	margin: 10px 0;
+}
+
+.patient.ng-enter.ng-enter-active {
+	width: calc(50% - 20px);
+	margin: 10px;
+}
+
+.patient.ng-leave {
+	transition: opacity var(--transition-time-fast) ease-in, transform var(--transition-time-slow) ease-in, width var(--transition-time-slow) var(--transition-time-slow) ease-out, margin var(--transition-time-slow) var(--transition-time-slow) ease-out;
+}
+
+.patient.ng-leave.ng-leave-active {
+	width: 0;
+	margin: 10px 0;
 }
 
 .patient.stagger.ng-enter-stagger {
@@ -905,4 +972,36 @@ span.secondary-color {
 
 .paginator>div {
 	font-size: 30px;
+}
+
+.landing-text>div>input {
+	left: 20% !important;
+	width: calc(80% - 20px) !important;
+}
+
+.landing-text>div>.highlight {
+	right: calc(80% - 10px) !important;
+	max-width: calc(80% - 20px) !important;
+}
+
+.landing-text>div>span {
+	width: 20% !important;
+}
+
+.landing-text textarea {
+	position: absolute;
+	font-size: 20px;
+	font-family: var(--font-body);
+	font-weight: 300;
+	margin: 0;
+	padding: 0;
+	margin-top: 15px;
+	left: calc(20% + 10px);
+	width: calc(80% - 20px);
+	height: calc(100% - 30px);
+	resize: none;
+}
+
+.landing-text>div:nth-child(2) {
+	height: 60% !important;
 }

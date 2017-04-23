@@ -1,23 +1,26 @@
 "use strict";
 
 angular.module('tunivetApp').
-controller('patientsController', function ($timeout, $scope, patientsService) {
-    $scope.showForm = false;
-    $scope.dataLoading = true;
-    $scope.adding = true;
-    $scope.patients = [];
-    $scope.pages = 0;
+controller('patientsController', function ($timeout, $scope, PatientsService, patients) {
     $scope.search = {
         name: "",
         page: 0,
         items: 4
     };
+    $scope.patients = patients.data;
+    $scope.pages = Math.ceil(patients.count / $scope.search.items);
+
+    $scope.showForm = false;
+    $scope.dataLoading = true;
+    $scope.adding = true;
+
     var _timeout;
 
     $scope.currentPatient = {
         name: "",
         condition: "",
-        exitDate: new Date()
+        exitDate: new Date(),
+        tarif: 0
     };
 
     $scope.setCurrent = (patient) => {
@@ -40,24 +43,31 @@ controller('patientsController', function ($timeout, $scope, patientsService) {
     $scope.send = () => {
         var promise;
         if ($scope.adding)
-            promise = patientsService.add($scope.currentPatient);
+            promise = PatientsService.add($scope.currentPatient);
         else
-            promise = patientsService.update($scope.currentPatient);
+            promise = PatientsService.update($scope.currentPatient);
         promise.then(suc => {
                 $scope.closeForm();
                 loadPatients();
             })
-            .catch(e => alert(e.data));
+            .catch(e => {
+                console.log(e.data);
+                alert(e.data);
+            });
     };
 
     $scope.delete = (patient) => {
-        patientsService.delete(patient)
+        PatientsService.delete(patient)
             .then(suc => loadPatients())
             .catch(e => alert(e.data));
     };
 
     $scope.closeForm = () => {
         $scope.showForm = false;
+        $scope.currentPatient.name = "";
+        $scope.currentPatient.condition = "";
+        $scope.currentPatient.exitDate = new Date();
+        $scope.currentPatient.tarif = 0;
     };
 
     $scope.changePage = (page) => {
@@ -68,17 +78,17 @@ controller('patientsController', function ($timeout, $scope, patientsService) {
     };
 
     var loadPatients = () => {
-        patientsService
+        PatientsService
             .get($scope.search)
             .then(res => {
                 $scope.patients = res.data;
                 $scope.pages = Math.ceil(res.count / $scope.search.items);
-                $scope.$apply();
                 $scope.dataLoading = false;
+                $scope.$apply();
             })
             .catch(e => {
-                $scope.$apply();
                 $scope.dataLoading = false;
+                $scope.$apply();
             });
     };
 
@@ -93,6 +103,4 @@ controller('patientsController', function ($timeout, $scope, patientsService) {
             _timeout = null;
         }, 500);
     };
-
-    loadPatients();
 });

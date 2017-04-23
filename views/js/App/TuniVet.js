@@ -9,7 +9,12 @@ config(function ($routeProvider) {
 	$routeProvider
 		.when('/', {
 			templateUrl: 'templates/landing.html',
-			controller: 'landingController'
+			controller: 'landingController',
+			resolve: {
+				info: LandingInfoService => {
+					return LandingInfoService.get();
+				}
+			}
 		})
 		.when('/login', {
 			templateUrl: 'templates/login.html',
@@ -17,7 +22,16 @@ config(function ($routeProvider) {
 		})
 		.when('/patients', {
 			templateUrl: 'templates/patients.html',
-			controller: 'patientsController'
+			controller: 'patientsController',
+			resolve: {
+				patients: PatientsService => {
+					return PatientsService.get({
+						name: "",
+						page: 0,
+						items: 4
+					});
+				}
+			}
 		})
 		.when('/patient/:id', {
 			templateUrl: 'templates/patient.html',

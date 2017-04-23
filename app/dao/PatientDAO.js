@@ -20,40 +20,23 @@ var insertPatient = (patient, user) => {
 			var date = new Date(patient.exitDate);
 			var formatedMysqlString = (new Date((new Date((new Date(date)).toISOString())).getTime() - ((new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, 19).replace('T', ' ');
 
-			if (patient.condition)
-				query += `\`${Contract.PatientsEntry.CONDITION}\``;
-			if (patient.condition && patient.name)
-				query += ", ";
-			if (patient.name)
-				query += `\`${Contract.PatientsEntry.NAME}\``;
-			if (patient.name && patient.exitDate && !isNaN(date.getTime()))
-				query += ", ";
-			if (patient.exitDate && !isNaN(date.getTime()))
-				query += `\`${Contract.PatientsEntry.EXIT_DATE}\``;
-			if (patient.exitDate && patient.tarif)
-				query += ',';
-			if (patient.name)
-				query += ` \`${Contract.PatientsEntry.TARIF}\``;
+			query += `\`${Contract.PatientsEntry.CONDITION}\``;
+			query += `, \`${Contract.PatientsEntry.NAME}\``;
+			query += `, \`${Contract.PatientsEntry.EXIT_DATE}\``;
+			query += `,  \`${Contract.PatientsEntry.TARIF}\``;
 
 			query += `) values (`;
 
-			if (patient.condition)
-				query += `'${patient.condition}'`;
-			if (patient.condition && patient.name)
-				query += ", ";
-			if (patient.name)
-				query += `'${patient.name}'`;
-			if (patient.name && patient.exitDate && !isNaN(date.getTime()))
-				query += ", ";
+			query += `'${patient.condition}'`;
+			query += `, '${patient.name}'`;
 			if (patient.exitDate && !isNaN(date.getTime()))
-				query += `'${formatedMysqlString}'`;
-			if (patient.exitDate && patient.tarif)
-				query += ',';
-			if (patient.name)
-				query += `'${patient.tarif}'`;
+				query += `, '${formatedMysqlString}'`;
+			else
+				query += `, null`;
+			query += `, '${patient.tarif}'`;
 
 			query += `);`;
-
+			console.log(query);
 			connection
 				.query(query)
 				.then(OkPacket => fulfill(OkPacket.insertId))

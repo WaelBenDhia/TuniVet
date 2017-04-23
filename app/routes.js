@@ -17,7 +17,7 @@ module.exports = (server, passport) => {
 
 	server.get('/css/fonts/:file', Handlers.fontFilesHandler);
 
-	server.get('/js/:file', Handlers.javascriptFilesHandler);
+	server.get('/js/dependencies/:file', Handlers.javascriptFilesHandler);
 
 	server.get('/js/App/:file', Handlers.angularFilesHandler);
 

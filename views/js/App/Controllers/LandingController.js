@@ -1,13 +1,15 @@
 "use strict";
 
 angular.module('tunivetApp').
-controller('landingController', function ($scope, Session, BackgroundImageService, LandingInfoService, AUTH_EVENTS) {
+controller('landingController', function ($scope, Session, BackgroundImageService, LandingInfoService, AUTH_EVENTS, info) {
+    $scope.info = info;
     $scope.showImageForm = false;
     $scope.showInfoForm = false;
     $scope.image = {
         id: -1,
         imageData: null
     };
+
     $scope.currentInfo = {
         id: -1,
         title: null,
@@ -40,11 +42,11 @@ controller('landingController', function ($scope, Session, BackgroundImageServic
 
     $scope.isLoggedIn = Session.getUser() !== null;
 
-    $scope.$on(AUTH_EVENTS.loginSuccess, function () {
+    $scope.$on(AUTH_EVENTS.loginSuccess, () => {
         $scope.isLoggedIn = Session.getUser() !== null;
     });
 
-    $scope.$on(AUTH_EVENTS.logoutSuccess, function () {
+    $scope.$on(AUTH_EVENTS.logoutSuccess, () => {
         $scope.isLoggedIn = Session.getUser() !== null;
     });
 
@@ -54,19 +56,17 @@ controller('landingController', function ($scope, Session, BackgroundImageServic
         .then(sucess => window.location.reload(true))
         .catch(err => console.log(err));
 
-    $scope.sendInfo = () => {
-        console.log("Sending: ");
-        console.log($scope.currentInfo);
+    $scope.sendInfo = () =>
         LandingInfoService.update($scope.currentInfo)
-            .then(suc => {
-                reloadInfo();
-                console.log(suc);
-                $scope.closeInfoForm();
-            })
-            .catch(err => console.log(err));
-    };
+        .then(suc => {
+            reloadInfo();
+            $scope.closeInfoForm();
+        })
+        .catch(err => console.log(err));
 
     var reloadInfo = () => LandingInfoService.get()
-        .then(info => $scope.info = info);
-    reloadInfo();
+        .then(info => {
+            $scope.info = info;
+            $scope.$apply();
+        });
 });

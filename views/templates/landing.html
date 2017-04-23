@@ -2,7 +2,7 @@
 <html>
 
 <body>
-	<div class="form" ng-if="showImageForm">
+	<div class="image-form form" ng-if="showImageForm">
 		<div ng-click="closeImageForm()" class="bg"></div>
 		<div class="elevation-5 card">
 			<div>
@@ -16,7 +16,7 @@
 	</div>
 	<div class="patients-form form" ng-if="showInfoForm">
 		<div ng-click="closeInfoForm()" class="bg"></div>
-		<div class="elevation-5 card">
+		<div class="elevation-5 card landing-text">
 			<div>
 				<span>Titre:</span>
 				<input ng-model="currentInfo.title" type="text">
@@ -24,7 +24,7 @@
 			</div>
 			<div>
 				<span>Texte:</span>
-				<input ng-model="currentInfo.body" type="text">
+				<textarea ng-model="currentInfo.body"></textarea>
 			</div>
 			<button ng-click="sendInfo()" type="submit" class="elevation-lift">Sauvegarde</button>
 		</div>

@@ -16,7 +16,11 @@ var cssFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/
 
 var fontFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/css/fonts/${req.params.file}`));
 
-var javascriptFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/js/${req.params.file}`));
+var javascriptFilesHandler = (req, res) =>
+    res.sendFile(
+        path.join(
+            __dirname,
+            `../views/js/bower_components/${req.params.file.slice(0, -7)}/${req.params.file}`));
 
 var angularFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/${req.params.file}`));
 
@@ -85,7 +89,10 @@ var createPatientHandler = (req, res) =>
     .then(insertId => res.status(200).send({
         id: insertId
     }))
-    .catch(err => res.status(400).send(err));
+    .catch(err => {
+        console.log(err);
+        res.status(400).send(err);
+    });
 
 var searchPatientsHandler = (req, res) =>
     DB.searchPatients(req.query.name, req.query.page || 0, req.query.items || 10)

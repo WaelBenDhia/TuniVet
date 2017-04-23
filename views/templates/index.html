@@ -4,12 +4,13 @@
 <head>
 	<title>Tunivet - Clinique Vétérinaire Menzah 6</title>
 	<link rel="stylesheet" type="text/css" href="css/TuniVet.css">
-	<script type="text/javascript" src="js/angular.min.js"></script>
-	<script type="text/javascript" src="js/angular-route.min.js"></script>
-	<script type="text/javascript" src="js/angular-animate.min.js"></script>
-	<script type="text/javascript" src="js/angular-sanitize.min.js"></script>
-	<script type="text/javascript" src="js/angular-cookies.min.js"></script>
-	<script type="text/javascript" src="js/ng-file-upload.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/angular.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/angular-route.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/angular-animate.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/angular-cookies.min.js"></script>
+	<script type="text/javascript" src="js/dependencies/ng-file-upload.min.js"></script>
 	<script type="text/javascript" src="js/App/TuniVet.js"></script>
 	<script type="text/javascript" src="js/App/Controllers/TunivetController.js"></script>
 	<script type="text/javascript" src="js/App/Controllers/LandingController.js"></script>
@@ -17,27 +18,25 @@
 	<script type="text/javascript" src="js/App/Controllers/PatientsController.js"></script>
 	<script type="text/javascript" src="js/App/Services.js"></script>
 	<script type="text/javascript" src="js/App/Filters.js"></script>
+	<script type="text/javascript" src="js/App/Directives.js"></script>
 </head>
 
 <body ng-app="tunivetApp" ng-controller="tunivetController">
 	<span class="title-bottom">TuniVet</span>
 	<header>
-		<a href="#/" class="title">Tuni<span class="secondary-color">Vet</span></a>
-		<a href="#/login" style="right: 0px; width: 70px;" ng-if="!isLoggedIn" class="button">Login</a>
+		<a href="#!/" class="title">Tuni<span class="secondary-color">Vet</span></a>
+		<a href="#!/login" style="right: 0px; width: 70px;" ng-if="!isLoggedIn" class="button">Login</a>
 		<a href ng-click="logout()" style="right: 0px; width: 70px;" ng-if="isLoggedIn" class="button">Logout</a>
-		<a href="#/patients" style="right: 361px; width: 141px;" ng-if="isLoggedIn" class="button">Inserer Patient</a>
+		<a href="#!/patients" style="right: 361px; width: 141px;" ng-if="isLoggedIn" class="button">Inserer Patient</a>
 		<div class="button" style="right: 110px; width: 211px;">
 			<span>Suivi:</span>
 			<input type="number" ng-model="patient.id">
-			<span class="highlight">{{patientId}}</span>
+			<span class="highlight" ng-bind="patient.id"></span>
 			<input ng-click="getPatient()" type="submit" value="→">
 		</div>
 	</header>
 	<div class="form" ng-if="showPatient">
-		<div ng-click="closePatient()" class="top"></div>
-		<div ng-click="closePatient()" class="bottom"></div>
-		<div ng-click="closePatient()" class="left"></div>
-		<div ng-click="closePatient()" class="right"></div>
+		<div ng-click="closePatient()" class="bg"></div>
 		<div class="elevation-5 card patient">
 			<div>
 				{{patient.id}}. {{patient.name}}
@@ -64,9 +63,17 @@
 			</div>
 		</div>
 	</div>
+	<!--<div class="view-holder-loader" loading>
+		<h1>Loading</h1>
+		<h1>Loading</h1>
+		<h1>Loading</h1>
+		<h1>Loading</h1>
+		<h1>Loading</h1>
+		<h1>Loading</h1>
+	</div>-->
 	<div class="view-holder" ng-view=""></div>
 	<footer>
-		<p>Site web conçu et développé Par <a href="http://waelbendhia.github.io/">Waël Ben Dhia</a>.</p>
+		<span>© {{year}} | <a href="http://waelbendhia.github.io/">Waël Ben Dhia</a></span>
 	</footer>
 </body>
 

@@ -1,9 +1,10 @@
 "use strict";
 
 angular.module('tunivetApp').
-controller('tunivetController', function ($scope, $location, patientsService, AuthService, Session, AUTH_EVENTS) {
+controller('tunivetController', function ($scope, $location, PatientsService, AuthService, Session, AUTH_EVENTS) {
     $scope.isLoggedIn = Session.getUser() !== null;
     $scope.showPatient = false;
+    $scope.year = new Date().getFullYear();
     $scope.patient = {
         id: 0,
         name: "",
@@ -15,7 +16,7 @@ controller('tunivetController', function ($scope, $location, patientsService, Au
     };
 
     $scope.getPatient = () => {
-        patientsService.getOne($scope.patient.id)
+        PatientsService.getOne($scope.patient.id)
             .then(suc => {
                 $scope.patient = suc;
                 $scope.showPatient = true;
@@ -23,7 +24,6 @@ controller('tunivetController', function ($scope, $location, patientsService, Au
             })
             .catch(err => {
                 $scope.patient.name = err.data;
-                $scope.patient.id = 22;
                 $scope.showPatient = true;
                 $scope.$apply();
             });

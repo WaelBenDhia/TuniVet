@@ -1,12 +1,12 @@
 "use strict";
 
 angular.module('tunivetApp')
-    .factory('patientsService', function ($http) {
+    .factory('PatientsService', function ($http) {
         var patientsService = {};
 
         patientsService.get = (searchParams) => {
             return new Promise((fulfill, reject) =>
-                $http.get('/patient', {
+                $http.get('/patient', { 
                     params: searchParams
                 })
                 .then(res => fulfill(res.data))
