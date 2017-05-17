@@ -20,6 +20,8 @@ var javascriptFilesHandler = (req, res) =>
     res.sendFile(
         path.join(
             __dirname,
+            req.params.file.slice(0, -7) == 'ng-map' ?
+            `../views/js/bower_components/ngmap/build/scripts/ng-map.min.js` :
             `../views/js/bower_components/${req.params.file.slice(0, -7)}/${req.params.file}`));
 
 var angularFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/${req.params.file}`));
@@ -44,6 +46,16 @@ var getLoggedInUserHandler = (req, res) => {
     delete user.password;
     delete user.salt;
     res.send(user);
+};
+
+var updateLoggedInUserHandler = (req, res) => {
+    DB.updateUser({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
+        }, req.user)
+        .then(user => res.status(201).send(user))
+        .catch(err => res.status(400).send(err));
 };
 
 var createArticleHandler = (req, res) =>
@@ -107,12 +119,12 @@ var updatePatientHandler = (req, res) =>
         id: req.params.id,
         tarif: req.body.tarif
     }, req.user)
-    .then(insertId => res.status(200).send("UPDATE SUCCESS"))
+    .then(() => res.status(200).send("UPDATE SUCCESS"))
     .catch(err => res.status(400).send(err));
 
 var deletePatientHandler = (req, res) =>
     DB.deletePatient(req.params.id, req.user)
-    .then(insertId => res.status(200).send("DELETE SUCCESS"))
+    .then(() => res.status(200).send("DELETE SUCCESS"))
     .catch(err => res.status(400).send(err));
 
 var getSinglePatientHandler = (req, res) =>
@@ -125,10 +137,9 @@ var imageGetHandler = (req, res) => res.sendFile(path.join(__dirname, '/../uploa
 
 var imageUpdateHandler = (req, res) => {
     var fstream = null;
-    var complete = false;
     req.pipe(req.busboy);
     req.busboy
-        .on('file', (fieldname, file, filename) => {
+        .on('file', (fieldname, file) => {
             var filePath = path.join(__dirname, '/../upload/', req.params.id);
             fstream = fs.createWriteStream(filePath);
             console.log(filePath);
@@ -136,16 +147,11 @@ var imageUpdateHandler = (req, res) => {
             var error = null;
             fstream.on('error', err => error = err);
             fstream.on('close', () => {
-                complete = true;
                 if (error)
                     res.status(500).send(error);
                 else
                     res.status(200).send('upload success');
             });
-        })
-        .on('finish', () => {
-            /*if (!complete)
-                res.status(400).send("No file found");*/
         });
 };
 
@@ -160,7 +166,7 @@ var updateInfoHandler = (req, res) =>
         title: req.body.title,
         body: req.body.body
     }, req.user)
-    .then(okPacket => res.status(200).send("UPDATE SUCCESS"))
+    .then(() => res.status(200).send("UPDATE SUCCESS"))
     .catch(err => res.status(400).send(err));
 
 var lostHandler = (req, res) => res.status(404).send("Vous avez l'air perdu");
@@ -177,6 +183,7 @@ module.exports = {
 
     createUserHandler: createUserHandler,
     getLoggedInUserHandler: getLoggedInUserHandler,
+    updateLoggedInUserHandler: updateLoggedInUserHandler,
 
     createArticleHandler: createArticleHandler,
     getArticleHandler: getArticleHandler,

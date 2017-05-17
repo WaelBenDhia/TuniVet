@@ -33,6 +33,8 @@ module.exports = (server, passport) => {
 
 	server.get('/profile', isLoggedIn, Handlers.getLoggedInUserHandler);
 
+	server.put('/profile', isLoggedIn, Handlers.updateLoggedInUserHandler);
+
 	server.get('/article/:id', Handlers.getArticleHandler);
 
 	server.get('/patient', isLoggedIn, Handlers.searchPatientsHandler);

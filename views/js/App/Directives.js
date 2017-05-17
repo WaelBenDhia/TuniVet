@@ -4,7 +4,7 @@ angular.module('tunivetApp')
     .directive('loading', function ($animate, $http) {
         return {
             restrict: 'A',
-            link: (scope, elm, attrs) => {
+            link: (scope, elm) => {
                 scope.isLoading = () => {
                     return $http.pendingRequests.length > 0;
                 };
@@ -21,7 +21,7 @@ angular.module('tunivetApp')
     .directive('content', function ($animate, $http) {
         return {
             restrict: 'A',
-            link: (scope, elm, attrs) => {
+            link: (scope, elm) => {
                 scope.isLoading = () => {
                     return $http.pendingRequests.length > 0;
                 };

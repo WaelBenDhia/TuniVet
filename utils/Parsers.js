@@ -23,7 +23,7 @@ var parseArticlesFromRowData = rows => {
 var parsePatientsFromRowData = rows => {
 	var patients = [];
 	for (var i = 0; i < rows.length; i++) {
-		var price = new Date(rows[i][Contract.PatientsEntry.EXIT_DATE]) || new Date();
+		var price = new Date(rows[i][Contract.PatientsEntry.EXIT_DATE]);
 		price -= new Date(rows[i][Contract.PatientsEntry.ENTRY_DATE]);
 		price /= 86400000;
 		price = Math.ceil(price);

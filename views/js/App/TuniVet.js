@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies', 'ngFileUpload']);
+var app = angular.module('tunivetApp', ['ngAnimate', 'ngSanitize', 'ngRoute', 'ngCookies', 'ngFileUpload', 'ngMap']);
 
 var bands = [];
 
@@ -33,17 +33,15 @@ config(function ($routeProvider) {
 				}
 			}
 		})
-		.when('/patient/:id', {
-			templateUrl: 'templates/patient.html',
-			controller: 'patientController'
+		.when('/profile', {
+			templateUrl: 'templates/profile.html',
+			controller: 'profileController'
 		})
 		.when('/articles', {
 			templateUrl: 'templates/articles.html',
 			controller: 'articlesController'
-		})
-		.when('/albums/:rating', {
-			templateUrl: 'templates/albumSearchView.html',
-			controller: 'albumSearchController'
 		});
 }).
-controller('articlesController', function ($scope) {});
+controller('articlesController', function () {
+	//TODO
+});

@@ -6,7 +6,7 @@ angular.module('tunivetApp')
 
         patientsService.get = (searchParams) => {
             return new Promise((fulfill, reject) =>
-                $http.get('/patient', { 
+                $http.get('/patient', {
                     params: searchParams
                 })
                 .then(res => fulfill(res.data))
@@ -54,7 +54,7 @@ angular.module('tunivetApp')
     .factory('LandingInfoService', function ($http) {
         var landingInfoService = {};
 
-        landingInfoService.get = (searchParams) => {
+        landingInfoService.get = () => {
             return new Promise((fulfill, reject) =>
                 $http.get('/info')
                 .then(res => fulfill(res.data))
@@ -85,7 +85,7 @@ angular.module('tunivetApp')
         authService.logout = () => {
             return new Promise(function (fulfill, reject) {
                 $http.get('logout')
-                    .then(success => {
+                    .then(() => {
                         Session.destroy();
                         fulfill();
                     })
@@ -98,15 +98,15 @@ angular.module('tunivetApp')
         authService.register = user => {
             return new Promise((fulfill, reject) => {
                 $http.post('/signup', user)
-                    .then(response => fulfill())
-                    .catch(err => reject());
+                    .then(fulfill)
+                    .catch(reject);
             });
         };
 
         authService.getUserStatus = () => {
             $http.get('/profile')
                 .then(res => Session.create(res.data))
-                .catch(e => Session.destroy());
+                .catch(Session.destroy);
         };
         return authService;
     })
@@ -155,7 +155,7 @@ angular.module('tunivetApp')
         return {
             restrict: 'A',
             scope: true,
-            link: (scope, element, attr) => {
+            link: (scope, element) => {
                 element.bind('change', () => {
                     var formData = new FormData();
                     formData.append('file', element[0].files[0]);

@@ -6,7 +6,7 @@ const PasswordHelper = require('../../utils/password.js');
 
 var connection = require('../../utils/ConnectionHandler.js').connection;
 
-var insertPatient = (patient, user) => {
+var insertPatient = patient => {
 	return new Promise((fulfill, reject) => {
 		var err;
 		if (!patient.name)
@@ -45,44 +45,37 @@ var insertPatient = (patient, user) => {
 	});
 };
 
-var updatePatient = (patient, user) => {
+
+var updatePatient = patient => {
+	function generateSetClause(propertyName) {
+		if (patient[propertyName])
+			return ` \`${Contract.PatientsEntry[propertyName.toUpperCase()]}\`='${patient[propertyName]}'`;
+		return '';
+	}
 	return new Promise((fulfill, reject) => {
-		var err;
 		if (!patient.id)
-			err = "Patient is missing id";
-		if (!patient.condition)
-			err = (err ? err + '\n' : '') + "Patient is missing condition.";
-		if (err)
-			reject(err);
+			reject("Patient is missing id");
+		else if (!patient.condition)
+			reject("Patient is missing condition.");
 		else {
 			var query = `update ${Contract.PatientsEntry.TABLE_NAME} set`;
 			var date = new Date(patient.exitDate);
-			if (patient.condition)
-				query += ` \`${Contract.PatientsEntry.CONDITION}\`='${patient.condition}'`;
-			if (patient.name && patient.condition)
-				query += ',';
-			if (patient.name)
-				query += ` \`${Contract.PatientsEntry.NAME}\`='${patient.name}'`;
-			if (patient.exitDate && patient.name)
-				query += ',';
+			var sets = generateSetClause('condition');
+			sets += (sets ? ',' : '') + generateSetClause('name');
+			sets += (sets ? ',' : '') + generateSetClause('tarif');
 			if (patient.exitDate && !isNaN(date.getTime())) {
-				var formatedMysqlString = (new Date((new Date((new Date(date)).toISOString())).getTime() - ((new Date()).getTimezoneOffset() * 60000))).toISOString().slice(0, 19).replace('T', ' ');
-				query += ` \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
+				var formatedMysqlString = new Date(new Date(date).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 19).replace('T', ' ');
+				sets += `${sets ? ',' : ''} \`${Contract.PatientsEntry.EXIT_DATE}\`='${formatedMysqlString}'`;
 			}
-			if (patient.exitDate && patient.tarif)
-				query += ',';
-			if (patient.name)
-				query += ` \`${Contract.PatientsEntry.TARIF}\`='${patient.tarif}'`;
-			query += ` where \`${Contract.PatientsEntry.ID}\`=${patient.id};`;
-			connection
-				.query(query)
-				.then(result => fulfill(result))
-				.catch(err => reject(err));
+			query += sets + ` where \`${Contract.PatientsEntry.ID}\`=${patient.id};`;
+			return connection.query(query)
+				.then(fulfill)
+				.catch(reject);
 		}
 	});
 };
 
-var deletePatient = (id, user) => {
+var deletePatient = id => {
 	return new Promise((fulfill, reject) =>
 		connection
 		.query(`delete from ${Contract.PatientsEntry.TABLE_NAME} where ${Contract.PatientsEntry.ID} = '${id}'`)

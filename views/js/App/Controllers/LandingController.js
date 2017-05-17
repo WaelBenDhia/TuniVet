@@ -1,7 +1,14 @@
 "use strict";
 
 angular.module('tunivetApp').
-controller('landingController', function ($scope, Session, BackgroundImageService, LandingInfoService, AUTH_EVENTS, info) {
+controller('landingController', function ($scope, Session, BackgroundImageService, LandingInfoService, AUTH_EVENTS, NgMap, info) {
+    function reloadInfo() {
+        LandingInfoService.get()
+            .then(info => {
+                $scope.info = info;
+                $scope.$apply();
+            });
+    }
     $scope.info = info;
     $scope.showImageForm = false;
     $scope.showInfoForm = false;
@@ -53,20 +60,15 @@ controller('landingController', function ($scope, Session, BackgroundImageServic
     $scope.sendImage = () =>
         BackgroundImageService
         .update($scope.image)
-        .then(sucess => window.location.reload(true))
+        .then(() => window.location.reload(true))
         .catch(err => console.log(err));
 
     $scope.sendInfo = () =>
         LandingInfoService.update($scope.currentInfo)
-        .then(suc => {
+        .then(() => {
             reloadInfo();
             $scope.closeInfoForm();
         })
         .catch(err => console.log(err));
 
-    var reloadInfo = () => LandingInfoService.get()
-        .then(info => {
-            $scope.info = info;
-            $scope.$apply();
-        });
 });

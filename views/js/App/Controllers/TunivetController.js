@@ -32,19 +32,17 @@ controller('tunivetController', function ($scope, $location, PatientsService, Au
 
     AuthService.getUserStatus();
 
-    $scope.$on(AUTH_EVENTS.loginSuccess, function () {
+    $scope.$on(AUTH_EVENTS.loginSuccess, () => {
         $scope.isLoggedIn = Session.getUser() !== null;
     });
 
-    $scope.$on(AUTH_EVENTS.logoutSuccess, function () {
+    $scope.$on(AUTH_EVENTS.logoutSuccess, () => {
         $scope.isLoggedIn = Session.getUser() !== null;
     });
 
     $scope.logout = () => {
         AuthService.logout()
-            .then(() => {
-                $location.path('/');
-            })
-            .catch(err => {});
+            .then(() => $location.path('/'))
+            .catch(console.log);
     };
 });

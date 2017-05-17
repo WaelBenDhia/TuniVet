@@ -33,22 +33,22 @@ var createTables = () => {
 	return new Promise((fulfill, reject) =>
 		connection
 		.query(createUsersQuery)
-		.then(success => {
+		.then(() => {
 			fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createPatientsQuery);
 		})
 		.catch(err => reject(err + "\n" + createUsersQuery))
-		.then(success => {
+		.then(() => {
 			fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createArticlesQuery);
 		})
 		.catch(err => reject(err + "\n" + createPatientsQuery))
-		.then(rows => {
+		.then(() => {
 			fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
 			return connection.query(createLandingPageInfoQuery);
 		})
 		.catch(err => reject(err + "\n" + createArticlesQuery))
-		.then(rows => {
+		.then(() => {
 			fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
 			fulfill(fuls);
 		})
@@ -60,18 +60,24 @@ module.exports = {
 	connection: connection,
 	dropTables: dropTables,
 	createTables: createTables,
+
 	authenticateUser: UserDAO.authenticateUser,
 	getUser: UserDAO.getUser,
 	insertUserIfNotExists: UserDAO.insertUserIfNotExists,
 	getUserByEmail: UserDAO.getUserByEmail,
+	updateUser: UserDAO.updateUser,
+	updatePassword: UserDAO.updatePassword,
+
 	insertPatient: PatientDAO.insertPatient,
 	updatePatient: PatientDAO.updatePatient,
 	deletePatient: PatientDAO.deletePatient,
 	getPatient: PatientDAO.getPatient,
+
 	insertArticle: ArticleDAO.insertArticle,
 	getArticle: ArticleDAO.getArticle,
 	getPatients: PatientDAO.getPatients,
 	searchPatients: PatientDAO.searchPatients,
+
 	getInfo: InfoDAO.getAllLandingPageInfo,
 	updateInfo: InfoDAO.updateLandingPageInfo
 };

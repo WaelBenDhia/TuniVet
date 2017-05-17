@@ -2,6 +2,22 @@
 
 angular.module('tunivetApp').
 controller('patientsController', function ($timeout, $scope, PatientsService, patients) {
+
+    var loadPatients = () => {
+        PatientsService
+            .get($scope.search)
+            .then(res => {
+                $scope.patients = res.data;
+                $scope.pages = Math.ceil(res.count / $scope.search.items);
+                $scope.dataLoading = false;
+                $scope.$apply();
+            })
+            .catch(() => {
+                $scope.dataLoading = false;
+                $scope.$apply();
+            });
+    };
+
     $scope.search = {
         name: "",
         page: 0,
@@ -46,20 +62,17 @@ controller('patientsController', function ($timeout, $scope, PatientsService, pa
             promise = PatientsService.add($scope.currentPatient);
         else
             promise = PatientsService.update($scope.currentPatient);
-        promise.then(suc => {
+        promise.then(() => {
                 $scope.closeForm();
                 loadPatients();
             })
-            .catch(e => {
-                console.log(e.data);
-                alert(e.data);
-            });
+            .catch(console.log);
     };
 
     $scope.delete = (patient) => {
         PatientsService.delete(patient)
-            .then(suc => loadPatients())
-            .catch(e => alert(e.data));
+            .then(loadPatients)
+            .catch(console.log);
     };
 
     $scope.closeForm = () => {
@@ -73,23 +86,8 @@ controller('patientsController', function ($timeout, $scope, PatientsService, pa
     $scope.changePage = (page) => {
         if ($scope.search.page + page >= 0 && $scope.search.page + page < $scope.pages) {
             $scope.search.page += page;
-            loadPatients(false);
+            loadPatients();
         }
-    };
-
-    var loadPatients = () => {
-        PatientsService
-            .get($scope.search)
-            .then(res => {
-                $scope.patients = res.data;
-                $scope.pages = Math.ceil(res.count / $scope.search.items);
-                $scope.dataLoading = false;
-                $scope.$apply();
-            })
-            .catch(e => {
-                $scope.dataLoading = false;
-                $scope.$apply();
-            });
     };
 
     $scope.updateFilter = (resetPage) => {

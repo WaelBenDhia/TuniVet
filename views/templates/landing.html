@@ -29,6 +29,23 @@
 			<button ng-click="sendInfo()" type="submit" class="elevation-lift">Sauvegarde</button>
 		</div>
 	</div>
+
+	<!--<div style="
+	height: calc(100vh - 180px);
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 90px;
+	overflow: hidden;
+	">
+		<video style="
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		" poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid" playsinline autoplay muted loop>
+			<source src="http://thenewcode.com/assets/videos/polina.webm" type="video/webm">
+			<source src="http://thenewcode.com/assets/videos/polina.mp4" type="video/mp4">
+		</video>
+	</div>-->
 	<div class="elevation-2 card landing-section landing-section-1">
 		<h1 class="title card elevation-2">{{info[0].title}}</h1>
 		<p class="content elevation-2" ng-bind-html="info[0].body"></p>
@@ -52,6 +69,15 @@
 		<p class="content elevation-2" ng-bind-html="info[3].body"></p>
 		<button class="info elevation-lift" ng-if="isLoggedIn" ng-click="displayInfoForm(3)">Changer le texte</button>
 		<button class="elevation-lift" ng-if="isLoggedIn" ng-click="displayImageForm(4)">Changer l'image</button>
+	</div>
+	<div class="landing-section card elevation-2 landing-section-4">
+		<h1 class="title card elevation-2">{{info[3].title}}</h1>
+		<p class="content elevation-2" ng-bind-html="info[3].body"></p>
+		<button class="elevation-lift" ng-if="isLoggedIn" ng-click="displayInfoForm(3)">Changer le texte</button>
+		<ng-map style="height:100%; width:100%" max-zoom="16" min-zoom="16" zoom-control="false" center="[36.844353, 10.162590]">
+			<marker position="[36.844353, 10.166590]" on-click="myfunc()">
+	</div>
+	</ng-map>
 	</div>
 </body>
 

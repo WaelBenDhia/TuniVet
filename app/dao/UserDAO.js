@@ -7,6 +7,26 @@ const IsEmail = require('isemail');
 
 var connection = require('../../utils/ConnectionHandler.js').connection;
 
+
+var getUser = (username) => {
+	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.USERNAME} ='${username}'`;
+	return new Promise((fulfill, reject) =>
+		connection.query(query)
+		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
+		.catch(err => reject(err))
+	);
+};
+
+
+var getUserByEmail = (email) => {
+	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.EMAIL} ='${email}'`;
+	return new Promise((fulfill, reject) =>
+		connection.query(query)
+		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
+		.catch(err => reject(err))
+	);
+};
+
 var authenticateUser = (user) => {
 	return new Promise((fulfill, reject) => {
 		var err;
@@ -79,27 +99,69 @@ var insertUserIfNotExists = (user) => {
 	});
 };
 
-var getUser = (username) => {
-	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.USERNAME} ='${username}'`;
-	return new Promise((fulfill, reject) =>
-		connection.query(query)
-		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
-		.catch(err => reject(err))
-	);
+
+var updateUser = (user, oldUser) => {
+	return new Promise((fulfill, reject) => {
+		var query = `update ${Contract.UsersEntry.TABLE_NAME} set `;
+		var updates = "";
+		if (user.email)
+			updates += `\`${Contract.UsersEntry.EMAIL}\`='${user.email}`;
+
+		if (user.firstName) {
+			if (updates)
+				updates += ', ';
+			updates += `\`${Contract.UsersEntry.FIRST_NAME}\`='${user.firstName}`;
+		}
+
+		if (user.lastName) {
+			if (updates)
+				updates += ', ';
+			updates += `\`${Contract.UsersEntry.LAST_NAME}\`='${user.lastName}`;
+		}
+		if (!updates) {
+			reject("Nothing to update.");
+		} else {
+			updates += ` where \`${Contract.UsersEntry.USERNAME}\` = \`${oldUser.username}\`;`;
+			var checkEmail;
+			if (user.email)
+				checkEmail = getUserByEmail(user.email);
+			else
+				checkEmail = Promise.resolve(false);
+			checkEmail
+				.then(dbUser => {
+					if (dbUser)
+						reject(`L'adresse e-mail ${user.email} existe déjà.`);
+					else
+						return connection.query(query + updates);
+				})
+				.catch(err => reject(err))
+				.then(OkPacket => fulfill(OkPacket))
+				.catch(err => reject(err));
+		}
+	});
 };
 
-var getUserByEmail = (email) => {
-	var query = `select * from ${Contract.UsersEntry.TABLE_NAME} where ${Contract.UsersEntry.EMAIL} ='${email}'`;
-	return new Promise((fulfill, reject) =>
-		connection.query(query)
-		.then(rows => fulfill(Parsers.parseUsersFromRowData(rows)[0]))
-		.catch(err => reject(err))
-	);
+var updatePassword = password => {
+	return new Promise((fulfill, reject) => {
+		if (!password)
+			reject("Mot de passe est vide.");
+		else {
+			PasswordHelper.hash(password)
+				.catch(err => reject(err))
+				.then(passwordAndSalt => {
+					return connection.query(`update \`${Contract.UsersEntry.TABLE_NAME}\ set \`${Contract.UsersEntry.PASSWORD}\` = '${passwordAndSalt.password}', \`${Contract.UsersEntry.SALT}\` = '${passwordAndSalt.salt}'`);
+				})
+				.catch(err => reject(err))
+				.then(OkPacket => fulfill(OkPacket));
+		}
+	});
 };
 
 module.exports = {
 	authenticateUser: authenticateUser,
 	insertUserIfNotExists: insertUserIfNotExists,
 	getUser: getUser,
-	getUserByEmail: getUserByEmail
+	getUserByEmail: getUserByEmail,
+	updateUser: updateUser,
+	updatePassword: updatePassword
 };
