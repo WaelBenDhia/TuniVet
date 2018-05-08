@@ -21,8 +21,8 @@ var javascriptFilesHandler = (req, res) =>
         path.join(
             __dirname,
             req.params.file.slice(0, -7) == 'ng-map' ?
-            `../views/js/bower_components/ngmap/build/scripts/ng-map.min.js` :
-            `../views/js/bower_components/${req.params.file.slice(0, -7)}/${req.params.file}`));
+                `../views/js/bower_components/ngmap/build/scripts/ng-map.min.js` :
+                `../views/js/bower_components/${req.params.file.slice(0, -7)}/${req.params.file}`));
 
 var angularFilesHandler = (req, res) => res.sendFile(path.join(__dirname, `../views/js/App/${req.params.file}`));
 
@@ -38,8 +38,8 @@ var createUserHandler = (req, res) =>
         lastName: req.body.lastName,
         password: req.body.password
     })
-    .then(user => res.status(201).send(user))
-    .catch(err => res.status(400).send(err));
+        .then(user => res.status(201).send(user))
+        .catch(err => res.status(400).send(err));
 
 var getLoggedInUserHandler = (req, res) => {
     var user = req.user;
@@ -50,10 +50,10 @@ var getLoggedInUserHandler = (req, res) => {
 
 var updateLoggedInUserHandler = (req, res) => {
     DB.updateUser({
-            email: req.body.email,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
-        }, req.user)
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    }, req.user)
         .then(user => res.status(201).send(user))
         .catch(err => res.status(400).send(err));
 };
@@ -63,15 +63,15 @@ var createArticleHandler = (req, res) =>
         name: req.body.name,
         content: req.body.content
     }, req.user)
-    .then(insertId => res.status(201).send({
-        id: insertId
-    }))
-    .catch(err => res.status(400).send(err));
+        .then(insertId => res.status(201).send({
+            id: insertId
+        }))
+        .catch(err => res.status(400).send(err));
 
 var getArticleHandler = (req, res) =>
     DB.getArticle(req.params.id)
-    .then(article => res.send(article))
-    .catch(err => res.send(err));
+        .then(article => res.send(article))
+        .catch(err => res.send(err));
 
 var loginHandler = (passport) => {
     return (req, res, next) => {
@@ -98,18 +98,18 @@ var loginHandler = (passport) => {
 
 var createPatientHandler = (req, res) =>
     DB.insertPatient(req.body, req.user)
-    .then(insertId => res.status(200).send({
-        id: insertId
-    }))
-    .catch(err => {
-        console.log(err);
-        res.status(400).send(err);
-    });
+        .then(insertId => res.status(200).send({
+            id: insertId
+        }))
+        .catch(err => {
+            console.log(err);
+            res.status(400).send(err);
+        });
 
 var searchPatientsHandler = (req, res) =>
     DB.searchPatients(req.query.name, req.query.page || 0, req.query.items || 10)
-    .then(patients => res.send(patients))
-    .catch(err => res.status(500).send(err));
+        .then(patients => res.send(patients))
+        .catch(err => res.status(500).send(err));
 
 var updatePatientHandler = (req, res) =>
     DB.updatePatient({
@@ -119,18 +119,18 @@ var updatePatientHandler = (req, res) =>
         id: req.params.id,
         tarif: req.body.tarif
     }, req.user)
-    .then(() => res.status(200).send("UPDATE SUCCESS"))
-    .catch(err => res.status(400).send(err));
+        .then(() => res.status(200).send("UPDATE SUCCESS"))
+        .catch(err => res.status(400).send(err));
 
 var deletePatientHandler = (req, res) =>
     DB.deletePatient(req.params.id, req.user)
-    .then(() => res.status(200).send("DELETE SUCCESS"))
-    .catch(err => res.status(400).send(err));
+        .then(() => res.status(200).send("DELETE SUCCESS"))
+        .catch(err => res.status(400).send(err));
 
 var getSinglePatientHandler = (req, res) =>
     DB.getPatient(req.params.id)
-    .then(patient => res.send(patient))
-    .catch(err => res.status(404).send(err));
+        .then(patient => res.send(patient))
+        .catch(err => res.status(404).send(err));
 
 
 var imageGetHandler = (req, res) => res.sendFile(path.join(__dirname, '/../upload/', req.params.id));
@@ -157,8 +157,8 @@ var imageUpdateHandler = (req, res) => {
 
 var getInfoHandler = (req, res) =>
     DB.getInfo()
-    .then(info => res.send(info))
-    .catch(err => res.status(500).send(err));
+        .then(info => res.send(info))
+        .catch(err => res.status(500).send(err));
 
 var updateInfoHandler = (req, res) =>
     DB.updateInfo({
@@ -166,8 +166,8 @@ var updateInfoHandler = (req, res) =>
         title: req.body.title,
         body: req.body.body
     }, req.user)
-    .then(() => res.status(200).send("UPDATE SUCCESS"))
-    .catch(err => res.status(400).send(err));
+        .then(() => res.status(200).send("UPDATE SUCCESS"))
+        .catch(err => res.status(400).send(err));
 
 var lostHandler = (req, res) => res.status(404).send("Vous avez l'air perdu");
 

@@ -14,8 +14,8 @@ var dropTables = () => {
 	var dropQuery = `drop table if exists ${Contract.ArticlesEntry.TABLE_NAME}, ${Contract.PatientsEntry.TABLE_NAME}, ${Contract.UsersEntry.TABLE_NAME};`;
 	return new Promise((fulfill, reject) =>
 		connection.query(dropQuery)
-		.then(rows => fulfill(rows))
-		.catch(err => reject(err))
+			.then(rows => fulfill(rows))
+			.catch(err => reject(err))
 	);
 };
 
@@ -32,27 +32,27 @@ var createTables = () => {
 	var fuls = [];
 	return new Promise((fulfill, reject) =>
 		connection
-		.query(createUsersQuery)
-		.then(() => {
-			fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
-			return connection.query(createPatientsQuery);
-		})
-		.catch(err => reject(err + "\n" + createUsersQuery))
-		.then(() => {
-			fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
-			return connection.query(createArticlesQuery);
-		})
-		.catch(err => reject(err + "\n" + createPatientsQuery))
-		.then(() => {
-			fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
-			return connection.query(createLandingPageInfoQuery);
-		})
-		.catch(err => reject(err + "\n" + createArticlesQuery))
-		.then(() => {
-			fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
-			fulfill(fuls);
-		})
-		.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
+			.query(createUsersQuery)
+			.then(() => {
+				fuls.push(`${Contract.UsersEntry.TABLE_NAME} table created successfully.`);
+				return connection.query(createPatientsQuery);
+			})
+			.catch(err => reject(err + "\n" + createUsersQuery))
+			.then(() => {
+				fuls.push(`${Contract.PatientsEntry.TABLE_NAME} table created successfully.`);
+				return connection.query(createArticlesQuery);
+			})
+			.catch(err => reject(err + "\n" + createPatientsQuery))
+			.then(() => {
+				fuls.push(`${Contract.ArticlesEntry.TABLE_NAME} table created successfully.`);
+				return connection.query(createLandingPageInfoQuery);
+			})
+			.catch(err => reject(err + "\n" + createArticlesQuery))
+			.then(() => {
+				fuls.push(`${Contract.LandingPageInfoEntry.TABLE_NAME} table created successfully.`);
+				fulfill(fuls);
+			})
+			.catch(err => reject(err + "\n" + createLandingPageInfoQuery))
 	);
 };
 

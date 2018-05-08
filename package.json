@@ -36,5 +36,8 @@
       "angular": false,
       "alert": false
     }
+  },
+  "devDependencies": {
+    "flow": "^0.2.3"
   }
 }

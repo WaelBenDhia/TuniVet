@@ -15,17 +15,12 @@ module.exports = (passport) => {
 
 	passport.use(new LocalStrategy(
 		(username, password, done) => {
-			DB.authenticateUser({
-					username: username,
-					password: password
-				})
+			DB.authenticateUser({ username, password })
 				.then(user => {
 					return done(null, user);
 				})
 				.catch(err => {
-					done(null, false, {
-						message: err
-					});
+					done(null, false, { message: err });
 				});
 		}
 	));
